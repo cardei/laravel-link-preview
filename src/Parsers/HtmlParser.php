@@ -206,8 +206,8 @@ class HtmlParser extends BaseParser implements ParserInterface
 
          // Después de la lógica de extracción del video, registrar el videoType
          if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('VideoType detected: ' . $videoType);
-            Log::debug('Video detected: ' . $video);
+            Log::debug('🚩 VideoType detected: ' . $videoType);
+            Log::debug('🚩 Video detected: ' . $video);
         }
 
 
