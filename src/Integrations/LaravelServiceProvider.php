@@ -1,4 +1,5 @@
 <?php
+
 namespace Cardei\LinkPreview\Integrations;
 
 use Illuminate\Support\ServiceProvider;
@@ -25,9 +26,10 @@ class LaravelServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Publicar el archivo de configuración
         $this->publishes([
-            __DIR__ . '/../config/link-preview.php' => config_path('link-preview.php'),
-        ]);
+            __DIR__ . '/../config/config.php' => config_path('link-preview.php'),
+        ], 'config');
     }
 
     /**
@@ -37,6 +39,12 @@ class LaravelServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // Fusionar la configuración del paquete con la de la aplicación
+        $this->mergeConfigFrom(
+            __DIR__ . '/../config/config.php', 'link-preview'
+        );
+
+        // Registrar el singleton 'link-preview' en el contenedor de servicios
         $this->app->singleton('link-preview', function() {
             return new Client();
         });
