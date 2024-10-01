@@ -38,6 +38,8 @@ class YouTubeParser extends BaseParser implements ParserInterface
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
             Log::debug('YouTube parser initialized');
+            Log::debug('YouTube reader: ' . get_class($this->getReader()));
+            Log::debug('YouTube preview: ' . get_class($this->getPreview()));
         }
     }
 
