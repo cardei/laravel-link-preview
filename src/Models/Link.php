@@ -133,6 +133,14 @@ class Link implements LinkInterface
     /**
      * @inheritdoc
      */
+    public function isVideo()
+    {
+        return !strncmp($this->getContentType(), 'video/', strlen('video/'));
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function isUp()
     {
         return $this->content !== false && $this->contentType !== false;

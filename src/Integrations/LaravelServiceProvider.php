@@ -25,6 +25,9 @@ class LaravelServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->publishes([
+            __DIR__ . '/../config/link-preview.php' => config_path('link-preview.php'),
+        ]);
     }
 
     /**

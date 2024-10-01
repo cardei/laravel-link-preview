@@ -11,6 +11,8 @@ use Cardei\LinkPreview\Models\Link;
 use Cardei\LinkPreview\Readers\HttpReader;
 use Cardei\LinkPreview\Models\HtmlPreview;
 use Symfony\Component\DomCrawler\Crawler;
+use Illuminate\Support\Facades\Log;
+
 
 /**
  * Class HtmlParser
@@ -103,18 +105,29 @@ class HtmlParser extends BaseParser implements ParserInterface
      */
     public function parseLink(LinkInterface $link)
     {
-        $link = $this->readLink($link);
 
-        if (!$link->isUp()) throw new ConnectionErrorException();
+        try {
+            $link = $this->readLink($link);
 
-        if ($link->isHtml()) {
-            $this->getPreview()->update($this->parseHtml($link));
-        } else if ($link->isImage()) {
-            $this->getPreview()->update($this->parseImage($link));
+            if (!$link->isUp()) throw new ConnectionErrorException();
+    
+            if ($link->isHtml()) {
+                $this->getPreview()->update($this->parseHtml($link));
+            } else if ($link->isImage()) {
+                $this->getPreview()->update($this->parseImage($link));
+            }
+    
+            return $this;
+        } catch (\Exception $e) {
+            if (config('link-preview.enable_logging') && config('app.debug')) {
+                Log::debug('Vista previa generada para el enlace: ' . $link);
+            }
+            // Ignore exceptions for now
+            // throw $e;
         }
 
-        return $this;
-    }
+
+    } // End of parseLink
 
     /**
      * @param LinkInterface $link
@@ -140,8 +153,9 @@ class HtmlParser extends BaseParser implements ParserInterface
         $images = [];
 
         try {
+
             $parser = new Crawler();
-	    $parser->addHtmlContent($link->getContent());
+	        $parser->addHtmlContent($link->getContent());
 
             // Parse all known tags
             foreach($this->tags as $tag => $selectors) {
@@ -173,7 +187,11 @@ class HtmlParser extends BaseParser implements ParserInterface
                 $images[] = $image->getAttribute('src');
             }
         } catch (\InvalidArgumentException $e) {
-            // Ignore exceptions
+            if (config('link-preview.enable_logging') && config('app.debug')) {
+                Log::debug('Vista previa generada para el enlace: ' . $link);
+            }
+            // Ignore exceptions for now
+            // throw $e;
         }
 
         $images = array_unique($images);
