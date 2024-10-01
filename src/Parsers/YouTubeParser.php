@@ -10,6 +10,7 @@ use Cardei\LinkPreview\Models\VideoPreview;
 use Cardei\LinkPreview\Readers\HttpReader;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client as GuzzleClient;
+use PgSql\Lob;
 
 /**
  * Class YouTubeParser
@@ -28,7 +29,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('🤩 v2 HD 10');
+            Log::debug('🤩 v2 HD 11');
             Log::debug('YouTube parser initialized');
             Log::debug('YouTube reader: ' . get_class($this->getReader()));
             Log::debug('YouTube preview: ' . get_class($this->getPreview()));
@@ -100,6 +101,9 @@ class YouTubeParser extends BaseParser implements ParserInterface
      */
     protected function fetchVideoDataFromApi($videoId, $youtubeApiKey)
     {
+
+        Log::debug('⭕️ YOUTUBE Fetching video data from YouTube API for ID: ' . $videoId);
+
         $client = new GuzzleClient();
 
         try {
