@@ -26,11 +26,11 @@ class LaravelServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Publicar el archivo de configuración
+ 
+        // Publicar el archivo de configuración con un tag único
         $this->publishes([
             __DIR__ . '/../config/config.php' => config_path('link-preview.php'),
-        ], 'config');
-    }
+        ], 'link-preview-config');
 
     /**
      * Register the service provider.

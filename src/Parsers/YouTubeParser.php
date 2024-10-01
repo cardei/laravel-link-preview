@@ -34,6 +34,10 @@ class YouTubeParser extends BaseParser implements ParserInterface
     {
         $this->setReader($reader ?: new HttpReader());
         $this->setPreview($preview ?: new VideoPreview());
+
+        if (config('link-preview.enable_logging') && config('app.debug')) {
+            Log::debug('YouTube parser initialized');
+        }
     }
 
     /**

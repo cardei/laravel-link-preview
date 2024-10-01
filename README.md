@@ -14,7 +14,7 @@ composer require cardei/link-preview
 After installation, if you want to publish the configuration file to customize options such as enabling logs, you can run:
 
 ```bash
-php artisan vendor:publish --tag=config
+php artisan vendor:publish --tag=link-preview-config
 ```
 
 This command will create a configuration file at `config/link-preview.php`.
@@ -72,6 +72,8 @@ LINK_PREVIEW_ENABLE_LOGS=true
 
 - **v1.0.0 - 1.0.1**: Supports Laravel 10.x
 - **v2.x**: Supports Laravel 11.x and newer versions.
+
+- 2.1.0-DEV - DO NOT USE IN PRODUCTION
 
 Branches:
 - `dev-main`: Development branch with the latest updates.
