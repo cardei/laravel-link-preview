@@ -162,6 +162,5 @@ class Client
         if (config('link-preview.enable_logging') && config('app.debug')) {
             Log::debug("Default parsers added: " . implode(", ", array_keys($this->getParsers())));
         }
-
     }
 }
