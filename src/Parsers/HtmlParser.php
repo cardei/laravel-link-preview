@@ -191,6 +191,11 @@ class HtmlParser extends BaseParser implements ParserInterface
 
         if (!isset($cover) && count($images)) $cover = $images[0];
 
+        if (config('link-preview.enable_logging') && config('app.debug')) {
+            Log::debug('🚩 videoType : ' . $videoType);
+            Log::debug('🚩 video : ' . $video);
+        }
+
         return compact('cover', 'title', 'description', 'images', 'video', 'videoType');
     }
 }
