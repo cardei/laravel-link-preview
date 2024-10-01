@@ -138,7 +138,7 @@ class HtmlParser extends BaseParser implements ParserInterface
         ];
     }
 
-    /**
+       /**
      * Extract required data from html source
      * @param LinkInterface $link
      * @return array
@@ -160,6 +160,7 @@ class HtmlParser extends BaseParser implements ParserInterface
                         } else {
                             ${$tag} = $parser->filter($selector['selector'])->first()->text();
                         }
+                        Log::debug("Parsed tag {$tag}: " . ${$tag});
                         break;
                     }
                 }

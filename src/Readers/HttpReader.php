@@ -93,6 +93,7 @@ class HttpReader implements ReaderInterface
         $client = $this->getClient();
 
         try {
+            
             $response = $client->request('GET', $link->getUrl(), array_merge($this->config, [
                 'on_stats' => function (TransferStats $stats) use (&$link) {
                     $link->setEffectiveUrl($stats->getEffectiveUri());

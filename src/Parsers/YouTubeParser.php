@@ -9,23 +9,14 @@ use Cardei\LinkPreview\Contracts\PreviewInterface;
 use Cardei\LinkPreview\Models\VideoPreview;
 use Cardei\LinkPreview\Readers\HttpReader;
 use Illuminate\Support\Facades\Log;
-
-
+use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * Class YouTubeParser
  */
 class YouTubeParser extends BaseParser implements ParserInterface
 {
-    // OLD:
-    /**
-     * Url validation pattern taken from http://stackoverflow.com/questions/2964678/jquery-youtube-url-validation-with-regex
-     */
-    // const PATTERN = '/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/';
-
     const PATTERN = '/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
-
-
 
     /**
      * @param ReaderInterface $reader
@@ -37,7 +28,8 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('YouTube parser initialized [HD/9]');
+            Log::debug('🤩 v2 HD 10');
+            Log::debug('YouTube parser initialized');
             Log::debug('YouTube reader: ' . get_class($this->getReader()));
             Log::debug('YouTube preview: ' . get_class($this->getPreview()));
         }
@@ -60,67 +52,82 @@ class YouTubeParser extends BaseParser implements ParserInterface
         return (preg_match(static::PATTERN, $link->getUrl()));
     }
 
-
     /**
      * @inheritdoc
      */
     public function parseLink(LinkInterface $link)
     {
-
         try {
-
             Log::debug('Parsing YouTube link: ' . $link->getUrl());
 
             preg_match(static::PATTERN, $link->getUrl(), $matches);
 
             if (!isset($matches[1])) {
-                if (config('link-preview.enable_logging') && config('app.debug')) {
-                    Log::debug('The YouTube URL is not valid: ' . $link->getUrl());
-                }
-                // Ignore exceptions for now
-                // throw new \InvalidArgumentException('URL de YouTube no válida.');
+                Log::debug('The YouTube URL is not valid: ' . $link->getUrl());
+                return $this;
             }
 
-            if (config('link-preview.enable_logging') && config('app.debug')) {
-                Log::debug('YouTube video ID: ' . $matches[1]);
+            $videoId = $matches[1];
+
+            Log::debug('YouTube video ID: ' . $videoId);
+
+            // Check if YouTube API Key is set
+            $youtubeApiKey = config('link-preview.youtube_api_key');
+            if ($youtubeApiKey) {
+                $this->fetchVideoDataFromApi($videoId, $youtubeApiKey);
             }
 
-            $this->getPreview()
-                ->setId($matches[1])
+            $this->getPreview()->setId($videoId)
                 ->setEmbed(
                     '<iframe id="ytplayer" type="text/html" width="640" height="390" src="' . e('//www.youtube.com/embed/'.$this->getPreview()->getId()) . '" frameborder="0"></iframe>'
                 );
 
-                if (config('link-preview.enable_logging') && config('app.debug')) {
-                    Log::debug('Generated YouTube iframe HTML: ' . $this->getPreview()->getEmbed());
-                }
+            Log::debug('Generated YouTube iframe HTML: ' . $this->getPreview()->getEmbed());
 
-                
-
-
-            // OLD CODE
-            // preg_match(static::PATTERN, $link->getUrl(), $matches);
-
-            // $this->getPreview()
-            //     ->setId($matches[1])
-            //     ->setEmbed(
-            //         '<iframe id="ytplayer" type="text/html" width="640" height="390" src="' . e('//www.youtube.com/embed/'.$this->getPreview()->getId()) . '" frameborder="0"></iframe>'
-            //     );
-                
-                // ->setEmbed(
-                //     '<iframe id="ytplayer" type="text/html" width="640" height="390" src="//www.youtube.com/embed/'.$this->getPreview()->getId().'" frameborder="0"></iframe>'
-                // );
-    
             return $this;
 
         } catch (\Exception $e) {
-            if (config('link-preview.enable_logging') && config('app.debug')) {
-                Log::debug('Error while parsing YouTube link: ' . $link->getUrl(), ['error' => $e->getMessage()]);
-            }
-            // Ignore exceptions for now
-            // throw $e;
+            Log::debug('Error while parsing YouTube link: ' . $link->getUrl(), ['error' => $e->getMessage()]);
         }
+    }
 
+    /**
+     * Fetch video data from the YouTube API and update the preview model
+     *
+     * @param string $videoId
+     * @param string $youtubeApiKey
+     * @return void
+     */
+    protected function fetchVideoDataFromApi($videoId, $youtubeApiKey)
+    {
+        $client = new GuzzleClient();
 
+        try {
+            $response = $client->request('GET', 'https://www.googleapis.com/youtube/v3/videos', [
+                'query' => [
+                    'id' => $videoId,
+                    'part' => 'snippet,contentDetails',
+                    'key' => $youtubeApiKey,
+                ],
+                'headers' => [
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0'
+                ]
+            ]);
+
+            $videoData = json_decode($response->getBody(), true);
+
+            if (isset($videoData['items'][0])) {
+                $snippet = $videoData['items'][0]['snippet'];
+                $this->getPreview()->setTitle($snippet['title']);
+                $this->getPreview()->setDescription($snippet['description']);
+                $this->getPreview()->setCover($snippet['thumbnails']['high']['url']);
+                Log::debug('YouTube API Data: ' . json_encode($snippet));
+            } else {
+                Log::debug('No video data found via YouTube API for ID: ' . $videoId);
+            }
+
+        } catch (\Exception $e) {
+            Log::debug('YouTube API request failed for ID: ' . $videoId, ['error' => $e->getMessage()]);
+        }
     }
 }
