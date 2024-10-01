@@ -29,7 +29,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('🤩 v2 HD 11');
+            Log::debug('🤩 v2 HD 12');
             Log::debug('YouTube parser initialized');
             Log::debug('YouTube reader: ' . get_class($this->getReader()));
             Log::debug('YouTube preview: ' . get_class($this->getPreview()));
@@ -117,9 +117,12 @@ class YouTubeParser extends BaseParser implements ParserInterface
                     'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0'
                 ]
             ]);
-
+        
             $videoData = json_decode($response->getBody(), true);
-
+            
+            // Log full response for debugging
+            Log::debug('YouTube API Full Response: ' . json_encode($videoData));
+        
             if (isset($videoData['items'][0])) {
                 $snippet = $videoData['items'][0]['snippet'];
                 $this->getPreview()->setTitle($snippet['title']);
@@ -129,7 +132,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
             } else {
                 Log::debug('No video data found via YouTube API for ID: ' . $videoId);
             }
-
+        
         } catch (\Exception $e) {
             Log::debug('YouTube API request failed for ID: ' . $videoId, ['error' => $e->getMessage()]);
         }
