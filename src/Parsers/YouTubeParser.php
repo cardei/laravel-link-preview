@@ -53,7 +53,20 @@ class YouTubeParser extends BaseParser implements ParserInterface
      */
     public function canParseLink(LinkInterface $link)
     {
-        return (preg_match(static::PATTERN, $link->getUrl()));
+
+        try {
+            Log::debug('Checking if YouTube can parse link: ' . $link->getUrl());
+            return (preg_match(static::PATTERN, $link->getUrl()));
+        } catch (\Exception $e) {
+            if (config('link-preview.enable_logging') && config('app.debug')) {
+                Log::debug('Error on canParseLink for YouTube: ' . $link->getUrl(), ['error' => $e->getMessage()]);
+            }
+            // Ignore exceptions for now
+            // throw $e;
+        }
+
+
+        
     }
 
     /**
@@ -64,6 +77,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
 
         try {
 
+            Log::debug('Parsing YouTube link: ' . $link->getUrl());
 
             preg_match(static::PATTERN, $link->getUrl(), $matches);
 
