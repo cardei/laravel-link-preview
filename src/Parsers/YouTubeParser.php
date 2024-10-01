@@ -81,11 +81,21 @@ class YouTubeParser extends BaseParser implements ParserInterface
                 // throw new \InvalidArgumentException('URL de YouTube no válida.');
             }
 
+            if (config('link-preview.enable_logging') && config('app.debug')) {
+                Log::debug('YouTube video ID: ' . $matches[1]);
+            }
+
             $this->getPreview()
                 ->setId($matches[1])
                 ->setEmbed(
                     '<iframe id="ytplayer" type="text/html" width="640" height="390" src="' . e('//www.youtube.com/embed/'.$this->getPreview()->getId()) . '" frameborder="0"></iframe>'
                 );
+
+                if (config('link-preview.enable_logging') && config('app.debug')) {
+                    Log::debug('Generated YouTube iframe HTML: ' . $this->getPreview()->getEmbed());
+                }
+
+                
 
 
             // OLD CODE
