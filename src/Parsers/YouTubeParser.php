@@ -11,6 +11,7 @@ use Cardei\LinkPreview\Readers\HttpReader;
 use Illuminate\Support\Facades\Log;
 
 
+
 /**
  * Class YouTubeParser
  */
@@ -53,21 +54,10 @@ class YouTubeParser extends BaseParser implements ParserInterface
      */
     public function canParseLink(LinkInterface $link)
     {
-
-        try {
-            Log::debug('Checking if YouTube can parse link: ' . $link->getUrl());
-            return (preg_match(static::PATTERN, $link->getUrl()));
-        } catch (\Exception $e) {
-            if (config('link-preview.enable_logging') && config('app.debug')) {
-                Log::debug('Error on canParseLink for YouTube: ' . $link->getUrl(), ['error' => $e->getMessage()]);
-            }
-            // Ignore exceptions for now
-            // throw $e;
-        }
-
-
-        
+        Log::debug('Inside canParseLink with URL: ' . $link->getUrl());
+        return (preg_match(static::PATTERN, $link->getUrl()));
     }
+
 
     /**
      * @inheritdoc

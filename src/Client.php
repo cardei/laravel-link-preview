@@ -9,6 +9,8 @@ use Cardei\LinkPreview\Parsers\YouTubeParser;
 use Cardei\LinkPreview\Parsers\VimeoParser;
 use Cardei\LinkPreview\Models\Link;
 use Cardei\LinkPreview\Exceptions\UnknownParserException;
+use Illuminate\Support\Facades\Log;
+
 
 class Client
 {
@@ -40,12 +42,18 @@ class Client
         $parsed = [];
 
         foreach ($this->getParsers() as $name => $parser) {
-            if ($parser->canParseLink($this->link))
+            Log::debug("Attempting to parse with parser: " . $name);
+            if ($parser->canParseLink($this->link)) {
+                Log::debug("Parser $name can parse the link: " . $this->link->getUrl());
                 $parsed[$name] = $parser->parseLink($this->link)->getPreview();
+            } else {
+                Log::debug("Parser $name cannot parse the link: " . $this->link->getUrl());
+            }
         }
 
         return $parsed;
     }
+
 
     /**
      * Get a preview from a single parser
@@ -150,5 +158,10 @@ class Client
         $this->addParser(new HtmlParser());
         $this->addParser(new YouTubeParser());
         $this->addParser(new VimeoParser());
+      
+        if (config('link-preview.enable_logging') && config('app.debug')) {
+            Log::debug("Default parsers added: " . implode(", ", array_keys($this->getParsers())));
+        }
+
     }
 }
