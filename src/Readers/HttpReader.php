@@ -8,6 +8,8 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\TransferStats;
 use GuzzleHttp\Exception\ConnectException;
+use Illuminate\Support\Facades\Log;
+
 
 /**
  * Class HttpReader
@@ -90,21 +92,35 @@ class HttpReader implements ReaderInterface
      */
     public function readLink(LinkInterface $link)
     {
-        $client = $this->getClient();
+
+        // TEMPORARY: Increase memory and time limits
+        ini_set('memory_limit', '512M');
+        set_time_limit(300);
+
+        // Añadir el User-Agent en la petición usando Guzzle
+        $client = new Client([
+            'headers' => [
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101 Firefox/91.0'
+            ],
+            'timeout' => 60, 
+            'connect_timeout' => 30,
+        ]);
 
         try {
-            $response = $client->request('GET', $link->getUrl(), array_merge($this->config, [
-                'on_stats' => function (TransferStats $stats) use (&$link) {
-                    $link->setEffectiveUrl($stats->getEffectiveUri());
-                }
-            ]));
+            $response = $client->request('GET', $link->getUrl());
+            $content = $response->getBody()->getContents();
 
-            $link->setContent($response->getBody())
-                ->setContentType($response->getHeader('Content-Type')[0]);
-        } catch (ConnectException $e) {
-            $link->setContent(false)->setContentType(false);
+            $link->setContent($content);
+            return $link;
+
+        } catch (\Exception $e) {
+            // Manejo de errores
+            if (config('link-preview.enable_logging') && config('app.debug')) {
+                Log::debug('Error while parsing YouTube link: ' . $link->getUrl(), ['error' => $e->getMessage()]);
+            }
+            // Ignore exceptions for now
+            // throw new \Exception("Error fetching the link: " . $e->getMessage());
         }
-
-        return $link;
     }
+
 }

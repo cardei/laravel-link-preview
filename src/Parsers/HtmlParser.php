@@ -149,14 +149,7 @@ class HtmlParser extends BaseParser implements ParserInterface
 
         try {
             $parser = new Crawler();
-            $htmlContent = $link->getContent();
-            
-            // Registrar el HTML crudo
-            if (config('link-preview.enable_logging') && config('app.debug')) {
-                Log::debug('Raw HTML content being parsed: ' . $htmlContent);
-            }
-
-            $parser->addHtmlContent($htmlContent);
+            $parser->addHtmlContent($link->getContent());
 
             // Parse all known tags
             foreach ($this->tags as $tag => $selectors) {
@@ -167,15 +160,9 @@ class HtmlParser extends BaseParser implements ParserInterface
                         } else {
                             ${$tag} = $parser->filter($selector['selector'])->first()->text();
                         }
-
-                        if (config('link-preview.enable_logging') && config('app.debug')) {
-                            Log::debug('Parsed tag ' . $tag . ': ' . ${$tag});
-                        }
-
                         break;
                     }
                 }
-
                 // Default is empty string
                 if (!isset(${$tag})) ${$tag} = '';
             }
@@ -203,13 +190,6 @@ class HtmlParser extends BaseParser implements ParserInterface
         $images = array_unique($images);
 
         if (!isset($cover) && count($images)) $cover = $images[0];
-
-         // Después de la lógica de extracción del video, registrar el videoType
-         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('🚩 VideoType detected: ' . $videoType);
-            Log::debug('🚩 Video detected: ' . $video);
-        }
-
 
         return compact('cover', 'title', 'description', 'images', 'video', 'videoType');
     }
