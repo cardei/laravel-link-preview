@@ -13,7 +13,6 @@ use Cardei\LinkPreview\Models\HtmlPreview;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Facades\Log;
 
-
 /**
  * Class HtmlParser
  */
@@ -30,26 +29,22 @@ class HtmlParser extends BaseParser implements ParserInterface
             ['selector' => 'meta[property="og:image"]', 'attribute' => 'content'],
             ['selector' => 'meta[itemprop="image"]', 'attribute' => 'content'],
         ],
-
         'title' => [
             ['selector' => 'meta[property="twitter:title"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="og:title"]', 'attribute' => 'content'],
             ['selector' => 'meta[itemprop="name"]', 'attribute' => 'content'],
             ['selector' => 'title']
         ],
-
         'description' => [
             ['selector' => 'meta[property="twitter:description"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="og:description"]', 'attribute' => 'content'],
             ['selector' => 'meta[itemprop="description"]', 'attribute' => 'content'],
             ['selector' => 'meta[name="description"]', 'attribute' => 'content'],
         ],
-
         'video' => [
             ['selector' => 'meta[property="twitter:player:stream"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="og:video"]', 'attribute' => 'content'],
         ],
-
         'videoType' => [
             ['selector' => 'meta[property="twitter:player:stream:content_type"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="og:video:type"]', 'attribute' => 'content'],
@@ -71,6 +66,12 @@ class HtmlParser extends BaseParser implements ParserInterface
     {
         $this->setReader($reader ?: new HttpReader());
         $this->setPreview($preview ?: new HtmlPreview());
+
+        if (config('link-preview.enable_logging') && config('app.debug')) {
+            Log::debug('HTML parser initialized');
+            Log::debug('HTML reader: ' . get_class($this->getReader()));
+            Log::debug('HTML preview: ' . get_class($this->getPreview()));
+        }
     }
 
     /**
@@ -81,22 +82,12 @@ class HtmlParser extends BaseParser implements ParserInterface
         return 'general';
     }
 
-
-    /**
-     * @param int $width
-     * @param int $height
-     */
-    public function setMinimumImageDimension($width, $height)
-    {
-        $this->imageMinimumWidth = $width;
-        $this->imageMinimumHeight = $height;
-    }
-
     /**
      * @inheritdoc
      */
     public function canParseLink(LinkInterface $link)
     {
+        Log::debug('Inside canParseLink with URL: ' . $link->getUrl());
         return !filter_var($link->getUrl(), FILTER_VALIDATE_URL) === false;
     }
 
@@ -105,29 +96,33 @@ class HtmlParser extends BaseParser implements ParserInterface
      */
     public function parseLink(LinkInterface $link)
     {
-
         try {
+            Log::debug('Parsing HTML link: ' . $link->getUrl());
+
             $link = $this->readLink($link);
 
-            if (!$link->isUp()) throw new ConnectionErrorException();
-    
+            if (!$link->isUp()) {
+                throw new ConnectionErrorException();
+            }
+
             if ($link->isHtml()) {
                 $this->getPreview()->update($this->parseHtml($link));
             } else if ($link->isImage()) {
                 $this->getPreview()->update($this->parseImage($link));
             }
-    
+
+            if (config('link-preview.enable_logging') && config('app.debug')) {
+                Log::debug('Generated HTML preview for: ' . $link->getUrl());
+            }
+
             return $this;
+
         } catch (\Exception $e) {
             if (config('link-preview.enable_logging') && config('app.debug')) {
-                Log::debug('Vista previa generada para el enlace: ' . $link);
+                Log::debug('Error parsing HTML link: ' . $link->getUrl(), ['error' => $e->getMessage()]);
             }
-            // Ignore exceptions for now
-            // throw $e;
         }
-
-
-    } // End of parseLink
+    }
 
     /**
      * @param LinkInterface $link
@@ -153,45 +148,43 @@ class HtmlParser extends BaseParser implements ParserInterface
         $images = [];
 
         try {
-
             $parser = new Crawler();
-	        $parser->addHtmlContent($link->getContent());
+            $parser->addHtmlContent($link->getContent());
 
             // Parse all known tags
-            foreach($this->tags as $tag => $selectors) {
-                foreach($selectors as $selector) {
+            foreach ($this->tags as $tag => $selectors) {
+                foreach ($selectors as $selector) {
                     if ($parser->filter($selector['selector'])->count() > 0) {
                         if (isset($selector['attribute'])) {
                             ${$tag} = $parser->filter($selector['selector'])->first()->attr($selector['attribute']);
                         } else {
                             ${$tag} = $parser->filter($selector['selector'])->first()->text();
                         }
-
                         break;
                     }
                 }
-
                 // Default is empty string
                 if (!isset(${$tag})) ${$tag} = '';
             }
 
             // Parse all images on this page
-            foreach($parser->filter('img') as $image) {
+            foreach ($parser->filter('img') as $image) {
                 if (!$image->hasAttribute('src')) continue;
                 if (filter_var($image->getAttribute('src'), FILTER_VALIDATE_URL) === false) continue;
 
-                // This is not bulletproof, actual image maybe bigger than tags
+                // Check image dimensions
                 if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) continue;
                 if ($image->hasAttribute('height') && $image->getAttribute('height') < $this->imageMinimumHeight) continue;
 
                 $images[] = $image->getAttribute('src');
             }
+
+            Log::debug('Images parsed: ' . implode(', ', $images));
+
         } catch (\InvalidArgumentException $e) {
             if (config('link-preview.enable_logging') && config('app.debug')) {
-                Log::debug('Vista previa generada para el enlace: ' . $link);
+                Log::debug('Error parsing HTML content for: ' . $link->getUrl(), ['error' => $e->getMessage()]);
             }
-            // Ignore exceptions for now
-            // throw $e;
         }
 
         $images = array_unique($images);
