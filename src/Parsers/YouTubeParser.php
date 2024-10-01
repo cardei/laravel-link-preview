@@ -29,7 +29,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('🤩 v2 HD 13');
+            Log::debug('🤩 v2 HD 14');
             Log::debug('YouTube parser initialized');
             Log::debug('YouTube reader: ' . get_class($this->getReader()));
             Log::debug('YouTube preview: ' . get_class($this->getPreview()));
@@ -106,7 +106,6 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $client = new GuzzleClient();
 
         try {
-            // Make the YouTube API request
             $response = $client->request('GET', 'https://www.googleapis.com/youtube/v3/videos', [
                 'query' => [
                     'id' => $videoId,
@@ -118,17 +117,12 @@ class YouTubeParser extends BaseParser implements ParserInterface
                 ]
             ]);
 
-            // Decode the response data
             $videoData = json_decode($response->getBody(), true);
 
-            // Log the full response for debugging
-            Log::debug('YouTube API Full Response: ' . json_encode($videoData));
-
-            // Check if valid video data is returned
             if (isset($videoData['items'][0])) {
                 $snippet = $videoData['items'][0]['snippet'];
 
-                // Set the title, description, and cover image in the preview
+                // Set title, description, cover, etc.
                 $this->getPreview()->setTitle($snippet['title']);
                 $this->getPreview()->setDescription($snippet['description']);
                 $this->getPreview()->setCover($snippet['thumbnails']['high']['url']);
@@ -143,5 +137,6 @@ class YouTubeParser extends BaseParser implements ParserInterface
             Log::debug('🛑 YouTube API request failed for ID: ' . $videoId, ['error' => $e->getMessage()]);
         }
     }
+
 
 }
