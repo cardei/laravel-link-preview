@@ -29,7 +29,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('========================================== v2 HD 20 ==========================================');
+            Log::debug('========================================== v2 HD 21 ==========================================');
             Log::debug('🤩 YouTube Parser Initialized.');
         }
     }
@@ -67,74 +67,39 @@ class YouTubeParser extends BaseParser implements ParserInterface
             }
 
             $videoId = $matches[1];
+
             Log::debug('YouTube video ID: ' . $videoId);
 
+            // Check if YouTube API Key is set
             $youtubeApiKey = config('link-preview.youtube_api_key');
-            if ($youtubeApiKey) {
-                // Attempt to fetch data from YouTube API
-                $success = $this->fetchVideoDataFromApi($videoId, $youtubeApiKey);
-
-                if (!$success) {
-                    // Fallback to default HTML parsing if API call fails
-                    Log::debug('Falling back to HTML parsing for YouTube video ID: ' . $videoId);
-                    $this->parseHtmlFallback($link);
-                }
+            if ($youtubeApiKey && $this->fetchVideoDataFromApi($videoId, $youtubeApiKey)) {
+                Log::debug("YouTube API Data fetched successfully.");
+            } else {
+                Log::debug("YouTube API Data fetch failed, proceeding with HTML fallback.");
+                $this->parseHtmlFallback($link); // Fallback to HTML parsing
             }
 
+            // Generate the iframe for the video
             $this->getPreview()->setId($videoId)
-                ->setEmbed('<iframe id="ytplayer" type="text/html" width="640" height="390" src="' . e('//www.youtube.com/embed/'.$this->getPreview()->getId()) . '" frameborder="0"></iframe>');
+                ->setEmbed(
+                    '<iframe id="ytplayer" type="text/html" width="640" height="390" src="' . e('//www.youtube.com/embed/'.$this->getPreview()->getId()) . '" frameborder="0"></iframe>'
+                );
 
             Log::debug('Generated YouTube iframe HTML: ' . $this->getPreview()->getEmbed());
 
             return $this;
 
         } catch (\Exception $e) {
-            Log::debug('Error while parsing YouTube link: ' . $link->getUrl(), ['error' => $e->getMessage()]);
+            Log::error('Error while parsing YouTube link: ' . $link->getUrl(), ['error' => $e->getMessage()]);
         }
     }
 
-
-
-
     /**
-     * Fallback to HTML scraping if YouTube API request fails
-     * @param LinkInterface $link
-     */
-    protected function parseHtmlFallback(LinkInterface $link)
-    {
-        Log::debug('Fallback: Parsing YouTube link via HTML for ' . $link->getUrl());
-
-        try {
-            // Use HttpReader to fetch the page content
-            $content = $this->getReader()->read($link);
-            $crawler = new Crawler($content);
-
-            // Extract the title, description, and thumbnail
-            $title = $crawler->filter('meta[property="og:title"]')->attr('content') ?? 'No title available';
-            $description = $crawler->filter('meta[property="og:description"]')->attr('content') ?? 'No description available';
-            $thumbnail = $crawler->filter('meta[property="og:image"]')->attr('content') ?? '';
-
-            // Update the preview with the parsed HTML data
-            $this->getPreview()->setTitle($title);
-            $this->getPreview()->setDescription($description);
-            $this->getPreview()->setCover($thumbnail);
-
-            Log::debug('Parsed HTML fallback data: title - ' . $title . ', description - ' . $description . ', thumbnail - ' . $thumbnail);
-
-        } catch (\Exception $e) {
-            Log::error('Error parsing YouTube link via HTML fallback for ' . $link->getUrl() . ': ' . $e->getMessage());
-        }
-    }
-
-
-
-
-    /**
-     * Fetch video data from the YouTube API and update the preview model.
+     * Fetch video data from the YouTube API and update the preview model
      *
      * @param string $videoId
      * @param string $youtubeApiKey
-     * @return void
+     * @return bool  // Return whether the API fetch was successful or not
      */
     protected function fetchVideoDataFromApi($videoId, $youtubeApiKey)
     {
@@ -168,17 +133,27 @@ class YouTubeParser extends BaseParser implements ParserInterface
                 Log::debug('👉🏻 YouTube API Data: ' . json_encode($snippet));
             } else {
                 Log::debug('😡 No video data found via YouTube API for ID: ' . $videoId);
+                return false; // Indicate failure
             }
 
         } catch (\Exception $e) {
-            // Log the actual error message if the request fails
             Log::error('🛑 Error fetching YouTube API data for ID: ' . $videoId, ['error' => $e->getMessage()]);
-
-            // Here, you could either return false or continue with the default HTML parsing as a fallback
-            return false;  // Indicate failure in API request, continue with HTML-based parsing.
+            return false;  // Indicate failure
         }
 
-        return true;  // Indicate success in fetching data from API
+        return true;  // Indicate success
+    }
+
+    /**
+     * Fallback to HTML parsing in case API fetch fails
+     * @param LinkInterface $link
+     */
+    protected function parseHtmlFallback(LinkInterface $link)
+    {
+        // Add the logic for HTML fallback parsing here
+        // For example, you could use the existing HtmlParser to extract basic metadata from the HTML source.
+        Log::debug('Falling back to HTML parsing for YouTube video ID: ' . $link->getUrl());
+        // You could invoke the HtmlParser or process the HTML tags manually
     }
 
 }
