@@ -29,7 +29,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('========================================== v2 HD 30 ==========================================');
+            Log::debug('========================================== v2 HD 31 ==========================================');
             Log::debug('🤩 YouTube Parser Initialized.'); 
         }
     }
@@ -106,7 +106,8 @@ class YouTubeParser extends BaseParser implements ParserInterface
     {
         Log::debug('⭕️ YOUTUBE Fetching video data from YouTube API for ID: ' . $videoId);
 
-        if (!$this->getPreview()) {
+        $preview = $this->getPreview();  // Asigna el preview a una variable local
+        if (!$preview) {
             Log::error('Error: No preview object available.');
             return false;  // Detener si no hay un objeto preview válido
         }
@@ -145,34 +146,31 @@ class YouTubeParser extends BaseParser implements ParserInterface
                 Log::debug('-> Before updating preview object with YouTube API data:');
 
                 try {
+                    // Asegurarse de que el preview sigue siendo válido
+                    if (!$preview) {
+                        throw new \Exception("Preview object became invalid.");
+                    }
 
-                    $this->getPreview()->setTitle($snippet['title'] ?? 'No title available');
-                    $this->getPreview()->setDescription($snippet['description'] ?? 'No description available');
-                    $this->getPreview()->setCover($snippet['thumbnails']['high']['url'] ?? '');
-    
-                    $this->getPreview()->setId($videoId)
-                    ->setEmbed(
-                        '<iframe id="ytplayer" type="text/html" width="640" height="390" src="' . e('//www.youtube.com/embed/'.$this->getPreview()->getId()) . '" frameborder="0"></iframe>'
-                    );
+                    // Actualización del preview con los datos de YouTube
+                    $preview->setTitle($snippet['title'] ?? 'No title available');
+                    $preview->setDescription($snippet['description'] ?? 'No description available');
+                    $preview->setCover($snippet['thumbnails']['high']['url'] ?? '');
+
+                    $preview->setId($videoId)
+                        ->setEmbed(
+                            '<iframe id="ytplayer" type="text/html" width="640" height="390" src="' . e('//www.youtube.com/embed/'.$preview->getId()) . '" frameborder="0"></iframe>'
+                        );
 
                 } catch (\Exception $p_error) {
                     Log::error('Error while accessing preview object data: ' . $p_error->getMessage());
                     throw $p_error;
                 }
 
-
-               
-
-             
-
                 Log::debug('-> YouTube API Data updated in preview object with data:');
-
                 Log::debug('Verifying updated preview object data:');
-
-                Log::debug('Title: ' . $this->getPreview()->getTitle());
-                Log::debug('Description: ' . $this->getPreview()->getDescription());
-                Log::debug('Cover: ' . $this->getPreview()->getCover());
-
+                Log::debug('Title: ' . $preview->getTitle());
+                Log::debug('Description: ' . $preview->getDescription());
+                Log::debug('Cover: ' . $preview->getCover());
 
             } else {
                 Log::debug('😡 No valid video data found via YouTube API for ID: ' . $videoId);
