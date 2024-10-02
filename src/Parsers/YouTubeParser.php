@@ -29,7 +29,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('========================================== v2 HD 27 ==========================================');
+            Log::debug('========================================== v2 HD 87 ==========================================');
             Log::debug('🤩 YouTube Parser Initialized.'); 
         }
     }
@@ -138,16 +138,18 @@ class YouTubeParser extends BaseParser implements ParserInterface
 
                 Log::debug('👉🏻 YouTube API Snippet Data: ' . json_encode($snippet));
 
+                Log::debug('$snippet["title"]' . $snippet['title']);
+                Log::debug('$snippet["description"]' . $snippet['description']);
+                Log::debug('$snippet["thumbnails"]["high"]["url"]' . $snippet['thumbnails']['high']['url']);
+
+                Log::debug('-> Before updating preview object with YouTube API data:');
+
                 // Verificar y establecer el título, descripción y cover si están disponibles
                 $this->getPreview()->setTitle($snippet['title'] ?? 'No title available');
                 $this->getPreview()->setDescription($snippet['description'] ?? 'No description available');
                 $this->getPreview()->setCover($snippet['thumbnails']['high']['url'] ?? '');
 
                 Log::debug('-> YouTube API Data updated in preview object with data:');
-
-                Log::debug('$snippet["title"]' . $snippet['title']);
-                Log::debug('$snippet["description"]' . $snippet['description']);
-                Log::debug('$snippet["thumbnails"]["high"]["url"]' . $snippet['thumbnails']['high']['url']);
 
                 Log::debug('Verifying updated preview object data:');
 
