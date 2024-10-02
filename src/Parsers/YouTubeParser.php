@@ -29,7 +29,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('========================================== v2 HD 29 ==========================================');
+            Log::debug('========================================== v2 HD 30 ==========================================');
             Log::debug('🤩 YouTube Parser Initialized.'); 
         }
     }
@@ -144,16 +144,26 @@ class YouTubeParser extends BaseParser implements ParserInterface
 
                 Log::debug('-> Before updating preview object with YouTube API data:');
 
-                // Verificar y establecer el título, descripción y cover si están disponibles
+                try {
 
-                $this->getPreview()->setId($videoId)
-                ->setEmbed(
-                    '<iframe id="ytplayer" type="text/html" width="640" height="390" src="' . e('//www.youtube.com/embed/'.$this->getPreview()->getId()) . '" frameborder="0"></iframe>'
-                );
+                    $this->getPreview()->setTitle($snippet['title'] ?? 'No title available');
+                    $this->getPreview()->setDescription($snippet['description'] ?? 'No description available');
+                    $this->getPreview()->setCover($snippet['thumbnails']['high']['url'] ?? '');
+    
+                    $this->getPreview()->setId($videoId)
+                    ->setEmbed(
+                        '<iframe id="ytplayer" type="text/html" width="640" height="390" src="' . e('//www.youtube.com/embed/'.$this->getPreview()->getId()) . '" frameborder="0"></iframe>'
+                    );
 
-                // $this->getPreview()->setTitle($snippet['title'] ?? 'No title available');
-                // $this->getPreview()->setDescription($snippet['description'] ?? 'No description available');
-                // $this->getPreview()->setCover($snippet['thumbnails']['high']['url'] ?? '');
+                } catch (\Exception $p_error) {
+                    Log::error('Error while accessing preview object data: ' . $p_error->getMessage());
+                    throw $p_error;
+                }
+
+
+               
+
+             
 
                 Log::debug('-> YouTube API Data updated in preview object with data:');
 
