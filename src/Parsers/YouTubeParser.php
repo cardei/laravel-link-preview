@@ -29,7 +29,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('========================================== v2 HD 22 ==========================================');
+            Log::debug('========================================== v2 HD 23 ==========================================');
             Log::debug('🤩 YouTube Parser Initialized.');
         }
     }
@@ -105,6 +105,11 @@ class YouTubeParser extends BaseParser implements ParserInterface
     {
         Log::debug('⭕️ YOUTUBE Fetching video data from YouTube API for ID: ' . $videoId);
 
+        if (!$this->getPreview()) {
+            Log::error('Error: No preview object available.');
+            return false;  // Detener si no hay un objeto preview válido
+        }
+
         $client = new GuzzleClient();
 
         try {
@@ -133,17 +138,17 @@ class YouTubeParser extends BaseParser implements ParserInterface
                 Log::debug('👉🏻 YouTube API Data: ' . json_encode($snippet));
             } else {
                 Log::debug('😡 No video data found via YouTube API for ID: ' . $videoId);
-                return false; // Indicate failure
+                return false; // Indicar fallo
             }
 
         } catch (\Exception $e) {
             Log::error('🛑 Error fetching YouTube API data for ID: ' . $videoId, ['error' => $e->getMessage()]);
-            throw $e;
-            return false;  // Indicate failure
+            return false;  // Indicar fallo
         }
 
-        return true;  // Indicate success
+        return true;  // Indicar éxito
     }
+
 
     /**
      * Fallback to HTML parsing in case API fetch fails
