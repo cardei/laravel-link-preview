@@ -29,7 +29,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('========================================== v2 HD 26 ==========================================');
+            Log::debug('========================================== v2 HD 27 ==========================================');
             Log::debug('🤩 YouTube Parser Initialized.'); 
         }
     }
@@ -142,6 +142,19 @@ class YouTubeParser extends BaseParser implements ParserInterface
                 $this->getPreview()->setTitle($snippet['title'] ?? 'No title available');
                 $this->getPreview()->setDescription($snippet['description'] ?? 'No description available');
                 $this->getPreview()->setCover($snippet['thumbnails']['high']['url'] ?? '');
+
+                Log::debug('-> YouTube API Data updated in preview object with data:');
+
+                Log::debug('$snippet["title"]' . $snippet['title']);
+                Log::debug('$snippet["description"]' . $snippet['description']);
+                Log::debug('$snippet["thumbnails"]["high"]["url"]' . $snippet['thumbnails']['high']['url']);
+
+                Log::debug('Verifying updated preview object data:');
+
+                Log::debug('Title: ' . $this->getPreview()->getTitle());
+                Log::debug('Description: ' . $this->getPreview()->getDescription());
+                Log::debug('Cover: ' . $this->getPreview()->getCover());
+
 
             } else {
                 Log::debug('😡 No valid video data found via YouTube API for ID: ' . $videoId);
