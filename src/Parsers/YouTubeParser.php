@@ -29,7 +29,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('========================================== v2 HD 21 ==========================================');
+            Log::debug('========================================== v2 HD 22 ==========================================');
             Log::debug('🤩 YouTube Parser Initialized.');
         }
     }
@@ -138,6 +138,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
 
         } catch (\Exception $e) {
             Log::error('🛑 Error fetching YouTube API data for ID: ' . $videoId, ['error' => $e->getMessage()]);
+            throw $e;
             return false;  // Indicate failure
         }
 
