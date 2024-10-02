@@ -27,6 +27,13 @@ class VimeoParser extends BaseParser implements ParserInterface
     {
         $this->setReader($reader ?: new HttpReader());
         $this->setPreview($preview ?: new VideoPreview());
+
+        if (config('link-preview.enable_logging') && config('app.debug')) {
+            Log::debug('V========================================= v2 ==========================================');
+            Log::debug('HTML parser initialized');
+            Log::debug('HTML reader: ' . get_class($this->getReader()));
+            Log::debug('HTML preview: ' . get_class($this->getPreview()));
+        }
     }
 
     /**

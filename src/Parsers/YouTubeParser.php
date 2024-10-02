@@ -18,13 +18,14 @@ class YouTubeParser extends BaseParser implements ParserInterface
 {
     const PATTERN = '/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/';
 
+
     public function __construct(ReaderInterface $reader = null, PreviewInterface $preview = null)
     {
         $this->setReader($reader ?: new HttpReader());
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('========================================== v2 HD 33 ==========================================');
+            Log::debug('Y========================================= v2 ==========================================');
             Log::debug('🤩 YouTube Parser Initialized.');
         }
     }

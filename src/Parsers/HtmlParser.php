@@ -41,14 +41,14 @@ class HtmlParser extends BaseParser implements ParserInterface
             ['selector' => 'meta[itemprop="description"]', 'attribute' => 'content'],
             ['selector' => 'meta[name="description"]', 'attribute' => 'content'],
         ],
-        'video' => [
-            ['selector' => 'meta[property="twitter:player:stream"]', 'attribute' => 'content'],
-            ['selector' => 'meta[property="og:video"]', 'attribute' => 'content'],
-        ],
-        'videoType' => [
-            ['selector' => 'meta[property="twitter:player:stream:content_type"]', 'attribute' => 'content'],
-            ['selector' => 'meta[property="og:video:type"]', 'attribute' => 'content'],
-        ],
+        // 'video' => [
+        //     ['selector' => 'meta[property="twitter:player:stream"]', 'attribute' => 'content'],
+        //     ['selector' => 'meta[property="og:video"]', 'attribute' => 'content'],
+        // ],
+        // 'videoType' => [
+        //     ['selector' => 'meta[property="twitter:player:stream:content_type"]', 'attribute' => 'content'],
+        //     ['selector' => 'meta[property="og:video:type"]', 'attribute' => 'content'],
+        // ],
     ];
 
     /**
@@ -68,6 +68,7 @@ class HtmlParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new HtmlPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
+            Log::debug('H========================================= v2 HD 34 ==========================================');
             Log::debug('HTML parser initialized');
             Log::debug('HTML reader: ' . get_class($this->getReader()));
             Log::debug('HTML preview: ' . get_class($this->getPreview()));
