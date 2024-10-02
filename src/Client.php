@@ -44,10 +44,10 @@ class Client
         foreach ($this->getParsers() as $name => $parser) {
             Log::debug("Attempting to parse with parser: " . $name);
             if ($parser->canParseLink($this->link)) {
-                Log::debug("Parser $name can parse the link: " . $this->link->getUrl());
+                Log::debug("✅ Parser $name CAN parse the link: " . $this->link->getUrl());
                 $parsed[$name] = $parser->parseLink($this->link)->getPreview();
             } else {
-                Log::debug("Parser $name cannot parse the link: " . $this->link->getUrl());
+                Log::debug("Parser $name CANNOT parse the link: " . $this->link->getUrl());
             }
         }
 

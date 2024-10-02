@@ -130,13 +130,6 @@ class Link implements LinkInterface
         return !strncmp($this->getContentType(), 'image/', strlen('image/'));
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function isVideo()
-    {
-        return !strncmp($this->getContentType(), 'video/', strlen('video/'));
-    }
 
     /**
      * @inheritdoc

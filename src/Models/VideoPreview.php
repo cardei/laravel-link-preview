@@ -30,13 +30,19 @@ class VideoPreview implements PreviewInterface
     private $id;
 
     /**
-     * @var array
+     * @var string $title Video title
      */
-    private $fields = [
-        'embed',
-        'id',
-        'video'
-    ];
+    private $title;
+
+    /**
+     * @var string $description Video description
+     */
+    private $description;
+
+    /**
+     * @var string $cover Video cover image
+     */
+    private $cover;
 
     /**
      * Set the embed code
@@ -102,5 +108,71 @@ class VideoPreview implements PreviewInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set the video title
+     *
+     * @param string $title
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * Get the video title
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Set the video description
+     *
+     * @param string $description
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    /**
+     * Get the video description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set the video cover image URL
+     *
+     * @param string $cover
+     * @return $this
+     */
+    public function setCover($cover)
+    {
+        $this->cover = $cover;
+        return $this;
+    }
+
+    /**
+     * Get the video cover image URL
+     *
+     * @return string
+     */
+    public function getCover()
+    {
+        return $this->cover;
     }
 }
