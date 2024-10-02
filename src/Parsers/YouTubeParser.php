@@ -29,7 +29,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('========================================== v2 HD 19 ==========================================');
+            Log::debug('========================================== v2 HD 20 ==========================================');
             Log::debug('🤩 YouTube Parser Initialized.');
         }
     }
@@ -77,7 +77,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
                 if (!$success) {
                     // Fallback to default HTML parsing if API call fails
                     Log::debug('Falling back to HTML parsing for YouTube video ID: ' . $videoId);
-                    $this->parseHtmlFallback($link); // Implement your HTML-based parsing here
+                    $this->parseHtmlFallback($link);
                 }
             }
 
@@ -92,6 +92,41 @@ class YouTubeParser extends BaseParser implements ParserInterface
             Log::debug('Error while parsing YouTube link: ' . $link->getUrl(), ['error' => $e->getMessage()]);
         }
     }
+
+
+
+
+    /**
+     * Fallback to HTML scraping if YouTube API request fails
+     * @param LinkInterface $link
+     */
+    protected function parseHtmlFallback(LinkInterface $link)
+    {
+        Log::debug('Fallback: Parsing YouTube link via HTML for ' . $link->getUrl());
+
+        try {
+            // Use HttpReader to fetch the page content
+            $content = $this->getReader()->read($link);
+            $crawler = new Crawler($content);
+
+            // Extract the title, description, and thumbnail
+            $title = $crawler->filter('meta[property="og:title"]')->attr('content') ?? 'No title available';
+            $description = $crawler->filter('meta[property="og:description"]')->attr('content') ?? 'No description available';
+            $thumbnail = $crawler->filter('meta[property="og:image"]')->attr('content') ?? '';
+
+            // Update the preview with the parsed HTML data
+            $this->getPreview()->setTitle($title);
+            $this->getPreview()->setDescription($description);
+            $this->getPreview()->setCover($thumbnail);
+
+            Log::debug('Parsed HTML fallback data: title - ' . $title . ', description - ' . $description . ', thumbnail - ' . $thumbnail);
+
+        } catch (\Exception $e) {
+            Log::error('Error parsing YouTube link via HTML fallback for ' . $link->getUrl() . ': ' . $e->getMessage());
+        }
+    }
+
+
 
 
     /**
