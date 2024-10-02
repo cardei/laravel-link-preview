@@ -29,7 +29,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new VideoPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('========================================== v2 HD 23 ==========================================');
+            Log::debug('========================================== v2 HD 24 ==========================================');
             Log::debug('🤩 YouTube Parser Initialized.');
         }
     }
@@ -57,6 +57,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
     public function parseLink(LinkInterface $link)
     {
         try {
+
             Log::debug('Parsing YouTube link: ' . $link->getUrl());
 
             preg_match(static::PATTERN, $link->getUrl(), $matches);
@@ -113,6 +114,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
         $client = new GuzzleClient();
 
         try {
+
             $response = $client->request('GET', 'https://www.googleapis.com/youtube/v3/videos', [
                 'query' => [
                     'id' => $videoId,
@@ -128,14 +130,20 @@ class YouTubeParser extends BaseParser implements ParserInterface
             Log::debug('YouTube API Full Response: ' . json_encode($videoData));
 
             if (isset($videoData['items'][0])) {
+
+                Log::debug('👍🏻 YouTube API Data found for ID: ' . $videoId);
+
                 $snippet = $videoData['items'][0]['snippet'];
 
+                Log::debug('👉🏻 YouTube API Snippet Data: ' . json_encode($snippet));
+
                 // Check and set title, description, and cover if available
-                $this->getPreview()->setTitle($snippet['title'] ?? 'No title available');
-                $this->getPreview()->setDescription($snippet['description'] ?? 'No description available');
-                $this->getPreview()->setCover($snippet['thumbnails']['high']['url'] ?? '');
+                $this->getPreview()->setTitle((string)$snippet['title'] ?? 'No title available');
+                $this->getPreview()->setDescription((string)$snippet['description'] ?? 'No description available');
+                $this->getPreview()->setCover((string)$snippet['thumbnails']['high']['url'] ?? '');
 
                 Log::debug('👉🏻 YouTube API Data: ' . json_encode($snippet));
+
             } else {
                 Log::debug('😡 No video data found via YouTube API for ID: ' . $videoId);
                 return false; // Indicar fallo
@@ -143,6 +151,7 @@ class YouTubeParser extends BaseParser implements ParserInterface
 
         } catch (\Exception $e) {
             Log::error('🛑 Error fetching YouTube API data for ID: ' . $videoId, ['error' => $e->getMessage()]);
+            Log::debug('Error response: ' . $e->getResponse()->getBody());
             return false;  // Indicar fallo
         }
 
