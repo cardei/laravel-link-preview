@@ -68,7 +68,7 @@ class HtmlParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new HtmlPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('H========================================= v2.0.35 ==========================================');
+            Log::debug('H========================================= v2.0.36 ==========================================');
             Log::debug('HTML parser initialized');
             Log::debug('HTML reader: ' . get_class($this->getReader()));
             Log::debug('HTML preview: ' . get_class($this->getPreview()));
@@ -194,10 +194,11 @@ class HtmlParser extends BaseParser implements ParserInterface
         if (!isset($cover) && count($images)) $cover = $images[0];
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('🚩 videoType : ' . $videoType);
-            Log::debug('🚩 video : ' . $video);
+            // Log::debug('🚩 videoType : ' . $videoType);
+            // Log::debug('🚩 video : ' . $video);
         }
 
-        return compact('cover', 'title', 'description', 'images', 'video', 'videoType');
+        // return compact('cover', 'title', 'description', 'images', 'video', 'videoType');
+        return compact('cover', 'title', 'description', 'images');
     }
 }

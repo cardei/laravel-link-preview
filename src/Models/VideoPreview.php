@@ -45,6 +45,23 @@ class VideoPreview implements PreviewInterface
     private $cover;
 
     /**
+     * @var string $icon Website icon
+     */
+    private $icon;
+
+    /**
+     * @var string $author Video author
+     */
+    private $author;
+
+    /**
+     * @var string $keywords Video keywords
+     */
+    private $keywords;
+
+    
+
+    /**
      * Set the embed code
      *
      * @param string $embed
