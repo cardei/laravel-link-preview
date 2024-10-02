@@ -45,21 +45,41 @@ class VideoPreview implements PreviewInterface
     private $cover;
 
     /**
-     * @var string $icon Website icon
+     * @var string $icon Website icon (optional)
      */
     private $icon;
 
     /**
-     * @var string $author Video author
+     * @var string $author Video author (optional)
      */
     private $author;
 
     /**
-     * @var string $keywords Video keywords
+     * @var string $keywords Video keywords (optional)
      */
     private $keywords;
 
-    
+    /**
+     * @var string $videoType If there is a video, what type it is (optional)
+     */
+    private $videoType;
+
+    /**
+     * Fields exposed
+     * @var array
+     */
+    private $fields = [
+        'embed',
+        'video',
+        'id',
+        'title',
+        'description',
+        'cover',
+        'icon',
+        'author',
+        'keywords',
+        'videoType',
+    ];
 
     /**
      * Set the embed code
@@ -191,5 +211,103 @@ class VideoPreview implements PreviewInterface
     public function getCover()
     {
         return $this->cover;
+    }
+
+    /**
+     * Set the video icon URL (optional)
+     *
+     * @param string $icon
+     * @return $this
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
+        return $this;
+    }
+
+    /**
+     * Get the video icon URL
+     *
+     * @return string|null
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * Set the video author (optional)
+     *
+     * @param string $author
+     * @return $this
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+    /**
+     * Get the video author
+     *
+     * @return string|null
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set the video keywords (optional)
+     *
+     * @param string $keywords
+     * @return $this
+     */
+    public function setKeywords($keywords)
+    {
+        $this->keywords = $keywords;
+        return $this;
+    }
+
+    /**
+     * Get the video keywords
+     *
+     * @return string|null
+     */
+    public function getKeywords()
+    {
+        return $this->keywords;
+    }
+
+    /**
+     * Set the video type (optional)
+     *
+     * @param string $videoType
+     * @return $this
+     */
+    public function setVideoType($videoType)
+    {
+        $this->videoType = $videoType;
+        return $this;
+    }
+
+    /**
+     * Get the video type
+     *
+     * @return string|null
+     */
+    public function getVideoType()
+    {
+        return $this->videoType;
+    }
+
+    /**
+     * Get all exposed fields for export or import
+     *
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->fields;
     }
 }
