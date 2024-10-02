@@ -8,6 +8,8 @@ use Cardei\LinkPreview\Contracts\ParserInterface;
 use Cardei\LinkPreview\Contracts\PreviewInterface;
 use Cardei\LinkPreview\Models\VideoPreview;
 use Cardei\LinkPreview\Readers\HttpReader;
+use Illuminate\Support\Facades\Log;
+
 
 /**
  * Class YouTubeParser
