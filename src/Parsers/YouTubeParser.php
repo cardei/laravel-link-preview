@@ -2,9 +2,10 @@
 
 namespace Cardei\LinkPreview\Parsers;
 
-use Cardei\LinkPreview\Models\Link;
-use Cardei\LinkPreview\Models\VideoPreview;
 use GuzzleHttp\Client;
+use Cardei\LinkPreview\Models\Link;
+use Illuminate\Support\Facades\Log;
+use Cardei\LinkPreview\Models\VideoPreview;
 
 class YouTubeParser extends BaseParser
 {
@@ -15,6 +16,7 @@ class YouTubeParser extends BaseParser
 
     public function parseLink(Link $link): VideoPreview
     {
+
         preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/', $link->url, $matches);
         $videoId = $matches[1] ?? null;
 
@@ -43,8 +45,10 @@ class YouTubeParser extends BaseParser
         $preview->title = $videoData['title'] ?? null;
         $preview->description = $videoData['description'] ?? null;
         $preview->cover = $videoData['thumbnails']['high']['url'] ?? null;
+        $preview->video = $videoData['thumbnails']['high']['url'] ?? null;
+        $preview->videoType = 'text/html';
         $preview->embed = sprintf('<iframe width="560" height="315" src="https://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>', $videoId);
-
+        
         return $preview;
     }
 }
