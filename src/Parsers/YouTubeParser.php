@@ -29,7 +29,7 @@ class YouTubeParser extends BaseParser
             'query' => [
                 'id' => $videoId,
                 'part' => 'snippet,contentDetails',
-                'key' => 'YOUR_YOUTUBE_API_KEY',
+                'key' => config('link-preview.youtube_api_key'),
             ]
         ]);
 
