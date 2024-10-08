@@ -11,7 +11,7 @@ class HttpReader
 
     public function __construct()
     {
-        $this->client = new Client(['timeout' => 10]);
+        $this->client = new Client(['timeout' => 100]);
     }
 
     public function canRead(Link $link): bool
