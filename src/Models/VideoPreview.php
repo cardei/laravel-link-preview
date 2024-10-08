@@ -4,8 +4,8 @@ namespace Cardei\LinkPreview\Models;
 
 class VideoPreview extends Preview
 {
-    protected $cover;
-    protected $embed;
+    public $cover;
+    public $embed;
 
     public function setCover(string $cover): self
     {

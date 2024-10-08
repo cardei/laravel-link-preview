@@ -6,10 +6,9 @@ use Symfony\Component\DomCrawler\Crawler;
 use Cardei\LinkPreview\Models\Link;
 use Cardei\LinkPreview\Models\Preview;
 
-
 class GeneralParser extends BaseParser
 {
-    private $tags = [
+    private $metas = [
         'cover' => [
             ['selector' => 'meta[property="twitter:image"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="og:image"]', 'attribute' => 'content'],
@@ -39,11 +38,11 @@ class GeneralParser extends BaseParser
         $crawler = new Crawler($link->content);
         $preview = new Preview();
 
-        foreach ($this->tags as $property => $selectors) {
-            foreach ($selectors as $tag) {
-                $node = $crawler->filter($tag['selector']);
+        foreach ($this->metas as $property => $selectors) {
+            foreach ($selectors as $meta) {
+                $node = $crawler->filter($meta['selector']);
                 if ($node->count()) {
-                    $preview->{$property} = $node->attr($tag['attribute']) ?? $node->text();
+                    $preview->{$property} = $node->attr($meta['attribute']) ?? $node->text();
                     break;
                 }
             }

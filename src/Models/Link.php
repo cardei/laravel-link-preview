@@ -4,8 +4,8 @@ namespace Cardei\LinkPreview\Models;
 
 class Link
 {
-    private $url;
-    private $content;
+    public $url;
+    public $content;
 
     public function __construct(string $url)
     {
