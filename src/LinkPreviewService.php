@@ -1,11 +1,11 @@
 <?php
 
-namespace LinkPreview;
+namespace Cardei\LinkPreview;
 
-use LinkPreview\Models\Link;
-use LinkPreview\Readers\HttpReader;
-use LinkPreview\Parsers\YouTubeParser;
-use LinkPreview\Parsers\GeneralParser;
+use Cardei\LinkPreview\Models\Link;
+use Cardei\LinkPreview\Readers\HttpReader;
+use Cardei\LinkPreview\Parsers\YouTubeParser;
+use Cardei\LinkPreview\Parsers\GeneralParser;
 
 class LinkPreviewService
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace LinkPreview\Models;
+namespace Cardei\LinkPreview\Models;
 
 class Link
 {

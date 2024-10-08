@@ -1,9 +1,9 @@
 <?php
 
-namespace LinkPreview\Parsers;
+namespace Cardei\LinkPreview\Parsers;
 
-use LinkPreview\Models\Link;
-use LinkPreview\Models\VideoPreview;
+use Cardei\LinkPreview\Models\Link;
+use Cardei\LinkPreview\Models\VideoPreview;
 use GuzzleHttp\Client;
 
 class YouTubeParser extends BaseParser

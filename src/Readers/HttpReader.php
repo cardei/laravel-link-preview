@@ -1,8 +1,8 @@
 <?php
 
-namespace LinkPreview\Readers;
+namespace Cardei\LinkPreview\Readers;
 
-use LinkPreview\Models\Link;
+use Cardei\LinkPreview\Models\Link;
 use GuzzleHttp\Client;
 
 class HttpReader

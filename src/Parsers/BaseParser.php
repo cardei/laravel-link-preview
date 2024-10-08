@@ -1,9 +1,9 @@
 <?php
 
-namespace LinkPreview\Parsers;
+namespace Cardei\LinkPreview\Parsers;
 
-use LinkPreview\Models\Link;
-use LinkPreview\Models\Preview;
+use Cardei\LinkPreview\Models\Link;
+use Cardei\LinkPreview\Models\Preview;
 
 abstract class BaseParser
 {
