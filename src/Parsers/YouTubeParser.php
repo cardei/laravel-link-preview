@@ -57,58 +57,20 @@ class YouTubeParser extends BaseParser implements ParserInterface
             Log::debug('YouTube video ID: ' . $videoId);
 
             $youtubeApiKey = config('link-preview.youtube_api_key');
-            $client = new GuzzleClient();
-            $response = $client->request('GET', 'https://www.googleapis.com/youtube/v3/videos', [
-                'query' => [
-                    'id' => $videoId,
-                    'key' => $youtubeApiKey,
-                    'part' => 'snippet,contentDetails'
-                ]
-            ]);
-
-            $videoData = json_decode($response->getBody()->getContents(), true);
-            Log::debug('YouTube API Full Response: ' . json_encode($videoData));
-
-            if (!empty($videoData['items']) && isset($videoData['items'][0]['snippet'])) {
-                $snippet = $videoData['items'][0]['snippet'];
-                Log::debug('👍🏻 YouTube API Data found for ID: ' . $videoId);
-
-                // Actualiza el objeto preview directamente
-                $preview = $this->getPreview();
-                $preview->setTitle($snippet['title'] ?? 'No title available');
-                $preview->setDescription($snippet['description'] ?? 'No description available');
-                $preview->setCover($snippet['thumbnails']['high']['url'] ?? '');
-
-                // Genera el iframe
-                $preview->setId($videoId)
-                        ->setEmbed(
-                            '<iframe id="ytplayer" type="text/html" width="640" height="390" src="' . e('//www.youtube.com/embed/' . $preview->getId()) . '" frameborder="0"></iframe>'
-                        );
-
-                Log::debug('Generated YouTube iframe HTML: ' . $preview->getEmbed());
-
-                // Asegúrate de devolver el preview directamente y no seguir con el análisis HTML
-                return $preview;
+            if ($youtubeApiKey && $this->fetchVideoDataFromApi($videoId, $youtubeApiKey)) {
+                Log::debug("YouTube API Data fetched successfully.");
+                return $this;  // Termina si se obtiene la data correctamente
             } else {
-                Log::debug('😡 No valid video data found via YouTube API for ID: ' . $videoId);
-                return false;
+                Log::debug("YouTube API Data fetch failed, proceeding with HTML fallback.");
+                $this->parseHtmlFallback($link);  // Fallback al HTML si falla la API
             }
 
-        } catch (RequestException $e) {
-            Log::error('🛑 Error fetching YouTube API data for ID: ' . $videoId, ['error' => $e->getMessage()]);
-            if ($e->hasResponse()) {
-                Log::debug('Error response: ' . $e->getResponse()->getBody()->getContents());
-            }
-            return false;
+            return $this;
 
         } catch (\Exception $e) {
-            Log::error('🛑 General error fetching YouTube API data for ID: ' . $videoId, ['error' => $e->getMessage()]);
-            return false;
+            Log::error('Error while parsing YouTube link: ' . $link->getUrl(), ['error' => $e->getMessage()]);
         }
-
-        return true;
     }
-
 
     protected function fetchVideoDataFromApi($videoId, $youtubeApiKey)
     {
