@@ -41,7 +41,7 @@ class HttpReader implements ReaderInterface
         $this->jar = new CookieJar();
     
         $this->config = $config ?: [
-            'allow_redirects' => ['max' => 10],
+            'allow_redirects' => ['max' => 1000],
             'cookies' => $this->jar,
             'connect_timeout' => 60, // Tiempo para conectar al servidor
             'timeout' => 60, // Tiempo total permitido para la solicitud en segundos

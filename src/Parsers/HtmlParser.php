@@ -68,7 +68,7 @@ class HtmlParser extends BaseParser implements ParserInterface
         $this->setPreview($preview ?: new HtmlPreview());
 
         if (config('link-preview.enable_logging') && config('app.debug')) {
-            Log::debug('H========================================= v2.0.42 ==========================================');
+            Log::debug('H========================================= v2.0.43 ==========================================');
             Log::debug('HTML parser initialized');
             Log::debug('HTML reader: ' . get_class($this->getReader()));
             Log::debug('HTML preview: ' . get_class($this->getPreview()));
