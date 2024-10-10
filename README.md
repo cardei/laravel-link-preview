@@ -1,4 +1,4 @@
-# Laravel 🔗 Preview
+# Laravel Link 🔗 Preview (βETA) 🚧 WIP - Work In Progress
 
 **Link preview generation 🛠️ for Laravel 🚀 applications.** This package 📦 generates link previews for Laravel applications, similar to how social media platforms display link previews when a URL is shared.
 
