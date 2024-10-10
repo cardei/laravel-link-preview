@@ -2,62 +2,53 @@
 
 namespace Cardei\LinkPreview\Parsers;
 
-use Cardei\LinkPreview\Contracts\LinkInterface;
-use Cardei\LinkPreview\Contracts\ReaderInterface;
-use Cardei\LinkPreview\Contracts\ParserInterface;
-use Cardei\LinkPreview\Contracts\PreviewInterface;
+use GuzzleHttp\Client;
+use Cardei\LinkPreview\Models\Link;
+use Illuminate\Support\Facades\Log;
 use Cardei\LinkPreview\Models\VideoPreview;
-use Cardei\LinkPreview\Readers\HttpReader;
 
-/**
- * Class YouTubeParser
- */
-class YouTubeParser extends BaseParser implements ParserInterface
+class YouTubeParser extends BaseParser
 {
-    /**
-     * Url validation pattern taken from http://stackoverflow.com/questions/2964678/jquery-youtube-url-validation-with-regex
-     */
-    const PATTERN = '/^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/';
-
-    /**
-     * @param ReaderInterface $reader
-     * @param PreviewInterface $preview
-     */
-    public function __construct(ReaderInterface $reader = null, PreviewInterface $preview = null)
+    public function canParseLink(Link $link): bool
     {
-        $this->setReader($reader ?: new HttpReader());
-        $this->setPreview($preview ?: new VideoPreview());
+        return preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/', $link->url);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function __toString()
+    public function parseLink(Link $link): VideoPreview
     {
-        return 'youtube';
-    }
 
-    /**
-     * @inheritdoc
-     */
-    public function canParseLink(LinkInterface $link)
-    {
-        return (preg_match(static::PATTERN, $link->getUrl()));
-    }
+        preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/', $link->url, $matches);
+        $videoId = $matches[1] ?? null;
 
-    /**
-     * @inheritdoc
-     */
-    public function parseLink(LinkInterface $link)
-    {
-        preg_match(static::PATTERN, $link->getUrl(), $matches);
+        if (!$videoId) {
+            throw new \Exception('Invalid YouTube URL');
+        }
 
-        $this->getPreview()
-            ->setId($matches[1])
-            ->setEmbed(
-                '<iframe id="ytplayer" type="text/html" width="640" height="390" src="//www.youtube.com/embed/'.$this->getPreview()->getId().'" frameborder="0"></iframe>'
-            );
+        $apiKey = config('link-preview.youtube_api_key');
+        $client = new Client();
+        $response = $client->get("https://www.googleapis.com/youtube/v3/videos", [
+            'query' => [
+                'id' => $videoId,
+                'key' => $apiKey,
+                'part' => 'snippet,contentDetails'
+            ]
+        ]);
 
-        return $this;
+        $data = json_decode($response->getBody(), true);
+        $videoData = $data['items'][0]['snippet'] ?? null;
+
+        if (!$videoData) {
+            throw new \Exception('YouTube video data not found');
+        }
+
+        $preview = new VideoPreview();
+        $preview->title = $videoData['title'] ?? null;
+        $preview->description = $videoData['description'] ?? null;
+        $preview->cover = $videoData['thumbnails']['high']['url'] ?? null;
+        $preview->video = $videoData['thumbnails']['high']['url'] ?? null;
+        $preview->videoType = 'text/html';
+        $preview->embed = sprintf('<iframe width="560" height="315" src="https://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>', $videoId);
+        
+        return $preview;
     }
 }

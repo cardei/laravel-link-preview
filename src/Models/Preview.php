@@ -2,15 +2,13 @@
 
 namespace Cardei\LinkPreview\Models;
 
-class VideoPreview extends Preview
+class Preview
 {
     public $title;
     public $description;
     public $cover;
     public $video;
     public $videoType;
-    public $embed;
-
 
     public function setTitle(string $title): self
     {
@@ -42,21 +40,14 @@ class VideoPreview extends Preview
         return $this;
     }
 
-    public function setEmbed(string $embed): self
+    public function toArray()
     {
-        $this->embed = $embed;
-        return $this;
-    }
-
-    public function toArray(): array
-    {
-        return array_merge(parent::toArray(), [
+        return [
             'title' => $this->title,
             'description' => $this->description,
             'cover' => $this->cover,
             'video' => $this->video,
             'videoType' => $this->videoType,
-            'embed' => $this->embed,
-        ]);
+        ];
     }
 }
