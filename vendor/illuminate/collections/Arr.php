@@ -41,6 +41,38 @@ class Arr
     }
 
     /**
+     * Get an array item from an array using "dot" notation.
+     */
+    public static function array(ArrayAccess|array $array, string|int|null $key, ?array $default = null): array
+    {
+        $value = Arr::get($array, $key, $default);
+
+        if (! is_array($value)) {
+            throw new InvalidArgumentException(
+                sprintf('Array value for key [%s] must be an array, %s found.', $key, gettype($value))
+            );
+        }
+
+        return $value;
+    }
+
+    /**
+     * Get a boolean item from an array using "dot" notation.
+     */
+    public static function boolean(ArrayAccess|array $array, string|int|null $key, ?bool $default = null): bool
+    {
+        $value = Arr::get($array, $key, $default);
+
+        if (! is_bool($value)) {
+            throw new InvalidArgumentException(
+                sprintf('Array value for key [%s] must be a boolean, %s found.', $key, gettype($value))
+            );
+        }
+
+        return $value;
+    }
+
+    /**
      * Collapse an array of arrays into a single array.
      *
      * @param  iterable  $array
@@ -112,13 +144,19 @@ class Arr
     {
         $results = [];
 
-        foreach ($array as $key => $value) {
-            if (is_array($value) && ! empty($value)) {
-                $results = array_merge($results, static::dot($value, $prepend.$key.'.'));
-            } else {
-                $results[$prepend.$key] = $value;
+        $flatten = function ($data, $prefix) use (&$results, &$flatten): void {
+            foreach ($data as $key => $value) {
+                $newKey = $prefix.$key;
+
+                if (is_array($value) && ! empty($value)) {
+                    $flatten($value, $newKey.'.');
+                } else {
+                    $results[$newKey] = $value;
+                }
             }
-        }
+        };
+
+        $flatten($array, $prepend);
 
         return $results;
     }
@@ -281,6 +319,22 @@ class Arr
     }
 
     /**
+     * Get a float item from an array using "dot" notation.
+     */
+    public static function float(ArrayAccess|array $array, string|int|null $key, ?float $default = null): float
+    {
+        $value = Arr::get($array, $key, $default);
+
+        if (! is_float($value)) {
+            throw new InvalidArgumentException(
+                sprintf('Array value for key [%s] must be a float, %s found.', $key, gettype($value))
+            );
+        }
+
+        return $value;
+    }
+
+    /**
      * Remove one or many array items from a given array using "dot" notation.
      *
      * @param  array  $array
@@ -425,6 +479,22 @@ class Arr
         }
 
         return false;
+    }
+
+    /**
+     * Get an integer item from an array using "dot" notation.
+     */
+    public static function integer(ArrayAccess|array $array, string|int|null $key, ?int $default = null): int
+    {
+        $value = Arr::get($array, $key, $default);
+
+        if (! is_integer($value)) {
+            throw new InvalidArgumentException(
+                sprintf('Array value for key [%s] must be an integer, %s found.', $key, gettype($value))
+            );
+        }
+
+        return $value;
     }
 
     /**
@@ -808,6 +878,34 @@ class Arr
     }
 
     /**
+     * Get the first item in the collection, but only if exactly one item exists. Otherwise, throw an exception.
+     *
+     * @param  array  $array
+     * @param  callable  $callback
+     *
+     * @throws \Illuminate\Support\ItemNotFoundException
+     * @throws \Illuminate\Support\MultipleItemsFoundException
+     */
+    public static function sole($array, ?callable $callback = null)
+    {
+        if ($callback) {
+            $array = static::where($array, $callback);
+        }
+
+        $count = count($array);
+
+        if ($count === 0) {
+            throw new ItemNotFoundException;
+        }
+
+        if ($count > 1) {
+            throw new MultipleItemsFoundException($count);
+        }
+
+        return static::first($array);
+    }
+
+    /**
      * Sort the array using the given callback or "dot" notation.
      *
      * @param  array  $array
@@ -849,12 +947,12 @@ class Arr
 
         if (! array_is_list($array)) {
             $descending
-                    ? krsort($array, $options)
-                    : ksort($array, $options);
+                ? krsort($array, $options)
+                : ksort($array, $options);
         } else {
             $descending
-                    ? rsort($array, $options)
-                    : sort($array, $options);
+                ? rsort($array, $options)
+                : sort($array, $options);
         }
 
         return $array;
@@ -870,6 +968,22 @@ class Arr
     public static function sortRecursiveDesc($array, $options = SORT_REGULAR)
     {
         return static::sortRecursive($array, $options, true);
+    }
+
+    /**
+     * Get a string item from an array using "dot" notation.
+     */
+    public static function string(ArrayAccess|array $array, string|int|null $key, ?string $default = null): string
+    {
+        $value = Arr::get($array, $key, $default);
+
+        if (! is_string($value)) {
+            throw new InvalidArgumentException(
+                sprintf('Array value for key [%s] must be a string, %s found.', $key, gettype($value))
+            );
+        }
+
+        return $value;
     }
 
     /**
@@ -940,6 +1054,32 @@ class Arr
     public static function reject($array, callable $callback)
     {
         return static::where($array, fn ($value, $key) => ! $callback($value, $key));
+    }
+
+    /**
+     * Partition the array into two arrays using the given callback.
+     *
+     * @template TKey of array-key
+     * @template TValue of mixed
+     *
+     * @param  iterable<TKey, TValue>  $array
+     * @param  callable(TValue, TKey): bool  $callback
+     * @return array<int<0, 1>, array<TKey, TValue>>
+     */
+    public static function partition($array, callable $callback)
+    {
+        $passed = [];
+        $failed = [];
+
+        foreach ($array as $key => $item) {
+            if ($callback($item, $key)) {
+                $passed[$key] = $item;
+            } else {
+                $failed[$key] = $item;
+            }
+        }
+
+        return [$passed, $failed];
     }
 
     /**
