@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util;
 
+use const PHP_OS_FAMILY;
 use function class_exists;
 use function defined;
 use function dirname;
@@ -43,6 +44,7 @@ use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Type\TypeName;
 use SebastianBergmann\Version;
+use staabm\SideEffectsDetector\SideEffectsDetector;
 use TheSeer\Tokenizer\Tokenizer;
 
 /**
@@ -51,7 +53,7 @@ use TheSeer\Tokenizer\Tokenizer;
 final class ExcludeList
 {
     /**
-     * @psalm-var array<string,int>
+     * @var array<string,int>
      */
     private const EXCLUDED_CLASS_NAMES = [
         // composer
@@ -132,19 +134,22 @@ final class ExcludeList
         // sebastian/version
         Version::class => 1,
 
+        // staabm/side-effects-detector
+        SideEffectsDetector::class => 1,
+
         // theseer/tokenizer
         Tokenizer::class => 1,
     ];
 
     /**
-     * @psalm-var list<string>
+     * @var list<string>
      */
     private static array $directories = [];
     private static bool $initialized  = false;
     private readonly bool $enabled;
 
     /**
-     * @psalm-param non-empty-string $directory
+     * @param non-empty-string $directory
      *
      * @throws InvalidDirectoryException
      */
@@ -167,7 +172,7 @@ final class ExcludeList
     }
 
     /**
-     * @psalm-return list<string>
+     * @return list<string>
      */
     public function getExcludedDirectories(): array
     {

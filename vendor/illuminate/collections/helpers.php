@@ -77,9 +77,9 @@ if (! function_exists('data_get')) {
             $segment = match ($segment) {
                 '\*' => '*',
                 '\{first}' => '{first}',
-                '{first}' => array_key_first(is_array($target) ? $target : collect($target)->all()),
+                '{first}' => array_key_first(is_array($target) ? $target : (new Collection($target))->all()),
                 '\{last}' => '{last}',
-                '{last}' => array_key_last(is_array($target) ? $target : collect($target)->all()),
+                '{last}' => array_key_last(is_array($target) ? $target : (new Collection($target))->all()),
                 default => $segment,
             };
 
@@ -224,12 +224,34 @@ if (! function_exists('value')) {
     /**
      * Return the default value of the given value.
      *
-     * @param  mixed  $value
-     * @param  mixed  ...$args
-     * @return mixed
+     * @template TValue
+     * @template TArgs
+     *
+     * @param  TValue|\Closure(TArgs): TValue  $value
+     * @param  TArgs  ...$args
+     * @return TValue
      */
     function value($value, ...$args)
     {
         return $value instanceof Closure ? $value(...$args) : $value;
+    }
+}
+
+if (! function_exists('when')) {
+    /**
+     * Return a value if the given condition is true.
+     *
+     * @param  mixed  $condition
+     * @param  \Closure|mixed  $value
+     * @param  \Closure|mixed  $default
+     * @return mixed
+     */
+    function when($condition, $value, $default = null)
+    {
+        if ($condition) {
+            return value($value, $condition);
+        }
+
+        return value($default, $condition);
     }
 }

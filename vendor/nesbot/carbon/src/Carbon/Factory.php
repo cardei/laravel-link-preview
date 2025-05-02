@@ -44,13 +44,13 @@ use Throwable;
  * @method ?Carbon             createFromLocaleIsoFormat(string $format, string $locale, string $time, $timezone = null)                                            Create a Carbon instance from a specific ISO format and a string in a given language.
  * @method Carbon              createFromTime($hour = 0, $minute = 0, $second = 0, $timezone = null)                                                                Create a Carbon instance from just a time. The date portion is set to today.
  * @method Carbon              createFromTimeString(string $time, DateTimeZone|string|int|null $timezone = null)                                                    Create a Carbon instance from a time string. The date portion is set to today.
- * @method Carbon              createFromTimestamp(string|int|float $timestamp, DateTimeZone|string|int|null $timezone = null)                                      Create a Carbon instance from a timestamp and set the timezone (use default one if not specified).
+ * @method Carbon              createFromTimestamp(string|int|float $timestamp, DateTimeZone|string|int|null $timezone = null)                                      Create a Carbon instance from a timestamp and set the timezone (UTC by default).
  *                                                                                                                                                                  Timestamp input can be given as int, float or a string containing one or more numbers.
  * @method Carbon              createFromTimestampMs(string|int|float $timestamp, DateTimeZone|string|int|null $timezone = null)                                    Create a Carbon instance from a timestamp in milliseconds.
  *                                                                                                                                                                  Timestamp input can be given as int, float or a string containing one or more numbers.
  * @method Carbon              createFromTimestampMsUTC($timestamp)                                                                                                 Create a Carbon instance from a timestamp in milliseconds.
  *                                                                                                                                                                  Timestamp input can be given as int, float or a string containing one or more numbers.
- * @method Carbon              createFromTimestampUTC(string|int|float $timestamp)                                                                                  Create a Carbon instance from an timestamp keeping the timezone to UTC.
+ * @method Carbon              createFromTimestampUTC(string|int|float $timestamp)                                                                                  Create a Carbon instance from a timestamp keeping the timezone to UTC.
  *                                                                                                                                                                  Timestamp input can be given as int, float or a string containing one or more numbers.
  * @method Carbon              createMidnightDate($year = null, $month = null, $day = null, $timezone = null)                                                       Create a Carbon instance from just a date. The time portion is set to midnight.
  * @method ?Carbon             createSafe($year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null, $timezone = null)                 Create a new safe Carbon instance from a specific date and time.
@@ -96,7 +96,7 @@ use Throwable;
  *                                                                                                                                                                  Support is considered enabled if the 4 sentences are translated in the given locale.
  * @method bool                localeHasShortUnits(string $locale)                                                                                                  Returns true if the given locale is internally supported and has short-units support.
  *                                                                                                                                                                  Support is considered enabled if either year, day or hour has a short variant translated.
- * @method ?Carbon             make($var)                                                                                                                           Make a Carbon instance from given variable if possible.
+ * @method ?Carbon             make($var, DateTimeZone|string|null $timezone = null)                                                                                Make a Carbon instance from given variable if possible.
  *                                                                                                                                                                  Always return a new instance. Parse only strings and only these likely to be dates (skip intervals
  *                                                                                                                                                                  and recurrences). Throw an exception for invalid format, but otherwise return null.
  * @method void                mixin(object|string $mixin)                                                                                                          Mix another object into the class.
@@ -203,9 +203,9 @@ class Factory
         'v' => '([0-9]{1,3})',
         'e' => '([a-zA-Z]{1,5})|([a-zA-Z]*\\/[a-zA-Z]*)',
         'I' => '(0|1)',
-        'O' => '([+-](1[012]|0[0-9])[0134][05])',
-        'P' => '([+-](1[012]|0[0-9]):[0134][05])',
-        'p' => '(Z|[+-](1[012]|0[0-9]):[0134][05])',
+        'O' => '([+-](1[0123]|0[0-9])[0134][05])',
+        'P' => '([+-](1[0123]|0[0-9]):[0134][05])',
+        'p' => '(Z|[+-](1[0123]|0[0-9]):[0134][05])',
         'T' => '([a-zA-Z]{1,5})',
         'Z' => '(-?[1-5]?[0-9]{1,4})',
         'U' => '([0-9]*)',
@@ -251,7 +251,7 @@ class Factory
         return $this;
     }
 
-    public function className(string $className = null): self|string
+    public function className(?string $className = null): self|string
     {
         return $className === null ? $this->getClassName() : $this->setClassName($className);
     }
@@ -268,7 +268,7 @@ class Factory
         return $this;
     }
 
-    public function settings(array $settings = null): self|array
+    public function settings(?array $settings = null): self|array
     {
         return $settings === null ? $this->getSettings() : $this->setSettings($settings);
     }
@@ -318,6 +318,8 @@ class Factory
      * });
      * echo $factory->yesterday()->hours(11)->userFormat();
      * ```
+     *
+     * @param-closure-this  static  $macro
      */
     public function macro(string $name, ?callable $macro): void
     {

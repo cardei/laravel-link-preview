@@ -13,9 +13,11 @@ use DOMDocument;
 use DOMElement;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MoveWhitelistIncludesToCoverage implements Migration
+final readonly class MoveWhitelistIncludesToCoverage implements Migration
 {
     /**
      * @throws MigrationException

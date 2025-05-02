@@ -214,13 +214,6 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
     public const END_ITERATION = [self::class, 'endIteration'];
 
     /**
-     * Exclude start date from iteration.
-     *
-     * @var int
-     */
-    public const EXCLUDE_START_DATE = 1;
-
-    /**
      * Exclude end date from iteration.
      *
      * @var int
@@ -441,7 +434,7 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
      * Return whether given variable is an ISO 8601 specification.
      *
      * Note: Check is very basic, as actual validation will be done later when parsing.
-     * We just want to ensure that variable is not any other type of a valid parameter.
+     * We just want to ensure that variable is not any other type of valid parameter.
      */
     protected static function isIso8601(mixed $var): bool
     {
@@ -511,6 +504,19 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
         }
     }
 
+    private static function makeTimezone(mixed $input): ?CarbonTimeZone
+    {
+        if (!\is_string($input)) {
+            return null;
+        }
+
+        try {
+            return CarbonTimeZone::create($input);
+        } catch (Throwable) {
+            return null;
+        }
+    }
+
     /**
      * Register a custom macro.
      *
@@ -523,6 +529,8 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
      * });
      * echo CarbonPeriod::since('2011-05-12')->until('2011-06-03')->middle();
      * ```
+     *
+     * @param-closure-this  static  $macro
      */
     public static function macro(string $name, ?callable $macro): void
     {
@@ -595,11 +603,17 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
      */
     public function __construct(...$arguments)
     {
-        // Dummy construct, as properties are completely overridden
-        parent::__construct('R1/2000-01-01T00:00:00Z/P1D');
+        $raw = null;
 
-        if (is_a($this->dateClass, DateTimeImmutable::class, true)) {
-            $this->options = static::IMMUTABLE;
+        if (isset($arguments['raw'])) {
+            $raw = $arguments['raw'];
+            $this->isDefaultInterval = $arguments['isDefaultInterval'] ?? false;
+
+            if (isset($arguments['dateClass'])) {
+                $this->dateClass = $arguments['dateClass'];
+            }
+
+            $arguments = $raw;
         }
 
         // Parse and assign arguments one by one. First argument may be an ISO 8601 spec,
@@ -629,14 +643,20 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
             }
         }
 
+        if (is_a($this->dateClass, DateTimeImmutable::class, true)) {
+            $this->options = static::IMMUTABLE;
+        }
+
         $optionsSet = false;
+        $originalArguments = [];
+        $sortedArguments = [];
 
         foreach ($arguments as $argument) {
             $parsedDate = null;
 
             if ($argument instanceof DateTimeZone) {
-                $this->setTimezone($argument);
-            } elseif ($this->dateInterval === null &&
+                $sortedArguments = $this->configureTimezone($argument, $sortedArguments, $originalArguments);
+            } elseif (!isset($sortedArguments['interval']) &&
                 (
                     (\is_string($argument) && preg_match(
                         '/^(-?\d(\d(?![\/-])|[^\d\/-]([\/-])?)*|P[T\d].*|(?:\h*\d+(?:\.\d+)?\h*[a-z]+)+)$/i',
@@ -648,24 +668,44 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
                 ) &&
                 $parsedInterval = self::makeInterval($argument)
             ) {
-                $this->setDateInterval($parsedInterval);
-            } elseif ($this->startDate === null && $parsedDate = $this->makeDateTime($argument)) {
-                $this->setStartDate($parsedDate);
-            } elseif ($this->endDate === null && ($parsedDate = $parsedDate ?? $this->makeDateTime($argument))) {
-                $this->setEndDate($parsedDate);
-            } elseif ($this->carbonRecurrences === null &&
-                $this->endDate === null &&
+                $sortedArguments['interval'] = $parsedInterval;
+            } elseif (!isset($sortedArguments['start']) && $parsedDate = $this->makeDateTime($argument)) {
+                $sortedArguments['start'] = $parsedDate;
+                $originalArguments['start'] = $argument;
+            } elseif (!isset($sortedArguments['end']) && ($parsedDate = $parsedDate ?? $this->makeDateTime($argument))) {
+                $sortedArguments['end'] = $parsedDate;
+                $originalArguments['end'] = $argument;
+            } elseif (!isset($sortedArguments['recurrences']) &&
+                !isset($sortedArguments['end']) &&
                 (\is_int($argument) || \is_float($argument))
                 && $argument >= 0
             ) {
-                $this->setRecurrences($argument);
+                $sortedArguments['recurrences'] = $argument;
             } elseif (!$optionsSet && (\is_int($argument) || $argument === null)) {
                 $optionsSet = true;
-                $this->setOptions(((int) $this->options) | ((int) $argument));
+                $sortedArguments['options'] = (((int) $this->options) | ((int) $argument));
+            } elseif ($parsedTimezone = self::makeTimezone($argument)) {
+                $sortedArguments = $this->configureTimezone($parsedTimezone, $sortedArguments, $originalArguments);
             } else {
                 throw new InvalidPeriodParameterException('Invalid constructor parameters.');
             }
         }
+
+        if ($raw === null && isset($sortedArguments['start'])) {
+            $end = $sortedArguments['end'] ?? max(1, $sortedArguments['recurrences'] ?? 1);
+
+            if (\is_float($end)) {
+                $end = $end === INF ? PHP_INT_MAX : (int) round($end);
+            }
+
+            $raw = [
+                $sortedArguments['start'],
+                $sortedArguments['interval'] ?? CarbonInterval::day(),
+                $end,
+            ];
+        }
+
+        $this->setFromAssociativeArray($sortedArguments);
 
         if ($this->startDate === null) {
             $dateClass = $this->dateClass;
@@ -682,6 +722,12 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
             $this->setOptions(0);
         }
 
+        parent::__construct(
+            $this->startDate,
+            $this->dateInterval,
+            $this->endDate ?? $this->recurrences ?? 1,
+            $this->options,
+        );
         $this->constructed = true;
     }
 
@@ -818,8 +864,8 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
     /**
      * Change the period date interval.
      *
-     * @param DateInterval|string|int $interval
-     * @param Unit|string             $unit     the unit of $interval if it's a number
+     * @param DateInterval|Unit|string|int $interval
+     * @param Unit|string                  $unit     the unit of $interval if it's a number
      *
      * @throws InvalidIntervalException
      *
@@ -925,13 +971,15 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
      *
      * @return static
      */
-    public function toggleOptions(int $options, bool $state = null): static
+    public function toggleOptions(int $options, ?bool $state = null): static
     {
+        $self = $this->copyIfImmutable();
+
         if ($state === null) {
             $state = ($this->options & $options) !== $options;
         }
 
-        return $this->setOptions(
+        return $self->setOptions(
             $state ?
             $this->options | $options :
             $this->options & ~$options,
@@ -1216,9 +1264,9 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
      *
      * @return static
      */
-    public function setStartDate(mixed $date, bool $inclusive = null): static
+    public function setStartDate(mixed $date, ?bool $inclusive = null): static
     {
-        if (!$this->isInfiniteDate($date) && !($date = ([$this->dateClass, 'make'])($date))) {
+        if (!$this->isInfiniteDate($date) && !($date = ([$this->dateClass, 'make'])($date, $this->timezone))) {
             throw new InvalidPeriodDateException('Invalid start date.');
         }
 
@@ -1244,7 +1292,7 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
      */
     public function setEndDate(mixed $date, ?bool $inclusive = null): static
     {
-        if ($date !== null && !$this->isInfiniteDate($date) && !$date = ([$this->dateClass, 'make'])($date)) {
+        if ($date !== null && !$this->isInfiniteDate($date) && !$date = ([$this->dateClass, 'make'])($date, $this->timezone)) {
             throw new InvalidPeriodDateException('Invalid end date.');
         }
 
@@ -2352,7 +2400,7 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
         $date = ([$this->dateClass, 'make'])($date);
 
         if ($this->timezone) {
-            $date = $date->setTimezone($this->timezone);
+            return $date->setTimezone($this->timezone);
         }
 
         return $date;
@@ -2487,5 +2535,47 @@ class CarbonPeriod extends DatePeriodBase implements Countable, JsonSerializable
                 $parameters[$index] = $value;
             }
         }
+    }
+
+    private function setFromAssociativeArray(array $parameters): void
+    {
+        if (isset($parameters['start'])) {
+            $this->setStartDate($parameters['start']);
+        }
+
+        if (isset($parameters['start'])) {
+            $this->setStartDate($parameters['start']);
+        }
+
+        if (isset($parameters['end'])) {
+            $this->setEndDate($parameters['end']);
+        }
+
+        if (isset($parameters['recurrences'])) {
+            $this->setRecurrences($parameters['recurrences']);
+        }
+
+        if (isset($parameters['interval'])) {
+            $this->setDateInterval($parameters['interval']);
+        }
+
+        if (isset($parameters['options'])) {
+            $this->setOptions($parameters['options']);
+        }
+    }
+
+    private function configureTimezone(DateTimeZone $timezone, array $sortedArguments, array $originalArguments): array
+    {
+        $this->setTimezone($timezone);
+
+        if (\is_string($originalArguments['start'] ?? null)) {
+            $sortedArguments['start'] = $this->makeDateTime($originalArguments['start']);
+        }
+
+        if (\is_string($originalArguments['end'] ?? null)) {
+            $sortedArguments['end'] = $this->makeDateTime($originalArguments['end']);
+        }
+
+        return $sortedArguments;
     }
 }

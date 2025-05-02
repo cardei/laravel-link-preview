@@ -12,9 +12,11 @@ namespace PHPUnit\Runner\ResultCache;
 use PHPUnit\Framework\TestStatus\TestStatus;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class NullResultCache implements ResultCache
+final readonly class NullResultCache implements ResultCache
 {
     public function setStatus(string $id, TestStatus $status): void
     {

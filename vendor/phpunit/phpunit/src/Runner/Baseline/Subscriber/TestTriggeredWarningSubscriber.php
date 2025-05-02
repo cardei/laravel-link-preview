@@ -14,9 +14,11 @@ use PHPUnit\Event\Test\WarningTriggeredSubscriber;
 use PHPUnit\Runner\FileDoesNotExistException;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestTriggeredWarningSubscriber extends Subscriber implements WarningTriggeredSubscriber
+final readonly class TestTriggeredWarningSubscriber extends Subscriber implements WarningTriggeredSubscriber
 {
     /**
      * @throws FileDoesNotExistException

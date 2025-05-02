@@ -20,9 +20,11 @@ use function ini_set;
 use function putenv;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class PhpHandler
+final readonly class PhpHandler
 {
     public function handle(Php $configuration): void
     {

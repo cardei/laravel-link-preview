@@ -13,9 +13,11 @@ use PHPUnit\Util\Xml\Loader;
 use PHPUnit\Util\Xml\XmlException;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class SchemaDetector
+final readonly class SchemaDetector
 {
     /**
      * @throws XmlException

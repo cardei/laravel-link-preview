@@ -13,9 +13,11 @@ use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\PassedSubscriber;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestPassedSubscriber extends Subscriber implements PassedSubscriber
+final readonly class TestPassedSubscriber extends Subscriber implements PassedSubscriber
 {
     public function notify(Passed $event): void
     {

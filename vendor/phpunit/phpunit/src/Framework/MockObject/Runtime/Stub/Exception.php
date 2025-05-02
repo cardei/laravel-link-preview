@@ -13,11 +13,13 @@ use PHPUnit\Framework\MockObject\Invocation;
 use Throwable;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Exception implements Stub
+final readonly class Exception implements Stub
 {
-    private readonly Throwable $exception;
+    private Throwable $exception;
 
     public function __construct(Throwable $exception)
     {

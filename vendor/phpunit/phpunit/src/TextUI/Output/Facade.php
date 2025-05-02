@@ -9,15 +9,17 @@
  */
 namespace PHPUnit\TextUI\Output;
 
+use const PHP_EOL;
 use function assert;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\TestResultCollection;
+use PHPUnit\Runner\DirectoryDoesNotExistException;
 use PHPUnit\TestRunner\TestResult\TestResult;
+use PHPUnit\TextUI\CannotOpenSocketException;
 use PHPUnit\TextUI\Configuration\Configuration;
-use PHPUnit\TextUI\DirectoryDoesNotExistException;
 use PHPUnit\TextUI\InvalidSocketException;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
@@ -27,6 +29,8 @@ use SebastianBergmann\Timer\Duration;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Facade
@@ -73,9 +77,9 @@ final class Facade
     }
 
     /**
-     * @psalm-param ?array<string, TestResultCollection> $testDoxResult
+     * @param ?array<string, TestResultCollection> $testDoxResult
      */
-    public static function printResult(TestResult $result, ?array $testDoxResult, Duration $duration): void
+    public static function printResult(TestResult $result, ?array $testDoxResult, Duration $duration, bool $stackTraceForDeprecations): void
     {
         assert(self::$printer !== null);
 
@@ -88,11 +92,11 @@ final class Facade
         }
 
         if (self::$testDoxResultPrinter !== null && $testDoxResult !== null) {
-            self::$testDoxResultPrinter->print($testDoxResult);
+            self::$testDoxResultPrinter->print($result, $testDoxResult);
         }
 
         if (self::$defaultResultPrinter !== null) {
-            self::$defaultResultPrinter->print($result);
+            self::$defaultResultPrinter->print($result, $stackTraceForDeprecations);
         }
 
         if (self::$summaryPrinter !== null) {
@@ -101,6 +105,7 @@ final class Facade
     }
 
     /**
+     * @throws CannotOpenSocketException
      * @throws DirectoryDoesNotExistException
      * @throws InvalidSocketException
      */
@@ -201,16 +206,16 @@ final class Facade
                 self::$printer,
                 true,
                 true,
-                true,
+                $configuration->displayDetailsOnPhpunitDeprecations() || $configuration->displayDetailsOnAllIssues(),
                 false,
                 false,
                 true,
                 false,
                 false,
-                $configuration->displayDetailsOnTestsThatTriggerDeprecations(),
-                $configuration->displayDetailsOnTestsThatTriggerErrors(),
-                $configuration->displayDetailsOnTestsThatTriggerNotices(),
-                $configuration->displayDetailsOnTestsThatTriggerWarnings(),
+                $configuration->displayDetailsOnTestsThatTriggerDeprecations() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnTestsThatTriggerErrors() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnTestsThatTriggerNotices() || $configuration->displayDetailsOnAllIssues(),
+                $configuration->displayDetailsOnTestsThatTriggerWarnings() || $configuration->displayDetailsOnAllIssues(),
                 $configuration->reverseDefectList(),
             );
         }
@@ -219,6 +224,8 @@ final class Facade
             self::$testDoxResultPrinter = new TestDoxResultPrinter(
                 self::$printer,
                 $configuration->colors(),
+                $configuration->columns(),
+                $configuration->testDoxOutputWithSummary(),
             );
         }
 
@@ -234,16 +241,16 @@ final class Facade
             self::$printer,
             true,
             true,
+            $configuration->displayDetailsOnPhpunitDeprecations() || $configuration->displayDetailsOnAllIssues(),
             true,
             true,
             true,
-            true,
-            $configuration->displayDetailsOnIncompleteTests(),
-            $configuration->displayDetailsOnSkippedTests(),
-            $configuration->displayDetailsOnTestsThatTriggerDeprecations(),
-            $configuration->displayDetailsOnTestsThatTriggerErrors(),
-            $configuration->displayDetailsOnTestsThatTriggerNotices(),
-            $configuration->displayDetailsOnTestsThatTriggerWarnings(),
+            $configuration->displayDetailsOnIncompleteTests() || $configuration->displayDetailsOnAllIssues(),
+            $configuration->displayDetailsOnSkippedTests() || $configuration->displayDetailsOnAllIssues(),
+            $configuration->displayDetailsOnTestsThatTriggerDeprecations() || $configuration->displayDetailsOnAllIssues(),
+            $configuration->displayDetailsOnTestsThatTriggerErrors() || $configuration->displayDetailsOnAllIssues(),
+            $configuration->displayDetailsOnTestsThatTriggerNotices() || $configuration->displayDetailsOnAllIssues(),
+            $configuration->displayDetailsOnTestsThatTriggerWarnings() || $configuration->displayDetailsOnAllIssues(),
             $configuration->reverseDefectList(),
         );
     }

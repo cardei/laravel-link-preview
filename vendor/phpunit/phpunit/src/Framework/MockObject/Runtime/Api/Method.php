@@ -15,13 +15,17 @@ use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This trait is not covered by the backward compatibility promise for PHPUnit
  */
 trait Method
 {
+    abstract public function __phpunit_getInvocationHandler(): InvocationHandler;
+
     public function method(): InvocationMocker
     {
-        $expects = $this->expects(new AnyInvokedCount);
+        $expects = $this->__phpunit_getInvocationHandler()->expects(new AnyInvokedCount);
 
         return call_user_func_array(
             [$expects, 'method'],

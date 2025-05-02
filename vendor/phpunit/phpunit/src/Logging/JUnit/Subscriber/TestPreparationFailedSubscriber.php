@@ -14,9 +14,11 @@ use PHPUnit\Event\Test\PreparationFailed;
 use PHPUnit\Event\Test\PreparationFailedSubscriber;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestPreparationFailedSubscriber extends Subscriber implements PreparationFailedSubscriber
+final readonly class TestPreparationFailedSubscriber extends Subscriber implements PreparationFailedSubscriber
 {
     /**
      * @throws InvalidArgumentException

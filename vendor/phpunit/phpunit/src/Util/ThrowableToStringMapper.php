@@ -17,9 +17,11 @@ use PHPUnit\Runner\ErrorException;
 use Throwable;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ThrowableToStringMapper
+final readonly class ThrowableToStringMapper
 {
     public static function map(Throwable $t): string
     {

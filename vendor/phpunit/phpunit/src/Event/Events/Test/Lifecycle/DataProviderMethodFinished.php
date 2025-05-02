@@ -11,25 +11,24 @@ namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
 use function sprintf;
-use PHPUnit\Event\Code;
 use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
- * @psalm-immutable
+ * @immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class DataProviderMethodFinished implements Event
+final readonly class DataProviderMethodFinished implements Event
 {
-    private readonly Telemetry\Info $telemetryInfo;
-    private readonly ClassMethod $testMethod;
+    private Telemetry\Info $telemetryInfo;
+    private ClassMethod $testMethod;
 
     /**
-     * @psalm-var list<ClassMethod>
+     * @var list<ClassMethod>
      */
-    private readonly array $calledMethods;
+    private array $calledMethods;
 
     public function __construct(Telemetry\Info $telemetryInfo, ClassMethod $testMethod, ClassMethod ...$calledMethods)
     {
@@ -49,7 +48,7 @@ final class DataProviderMethodFinished implements Event
     }
 
     /**
-     * @psalm-return list<Code\ClassMethod>
+     * @return list<ClassMethod>
      */
     public function calledMethods(): array
     {

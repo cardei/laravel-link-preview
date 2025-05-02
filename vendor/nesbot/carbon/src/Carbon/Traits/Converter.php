@@ -475,7 +475,8 @@ trait Converter
      */
     public function toDateTime(): DateTime
     {
-        return new DateTime($this->rawFormat('Y-m-d H:i:s.u'), $this->getTimezone());
+        return DateTime::createFromFormat('U.u', $this->rawFormat('U.u'))
+            ->setTimezone($this->getTimezone());
     }
 
     /**
@@ -488,7 +489,8 @@ trait Converter
      */
     public function toDateTimeImmutable(): DateTimeImmutable
     {
-        return new DateTimeImmutable($this->rawFormat('Y-m-d H:i:s.u'), $this->getTimezone());
+        return DateTimeImmutable::createFromFormat('U.u', $this->rawFormat('U.u'))
+            ->setTimezone($this->getTimezone());
     }
 
     /**
@@ -519,21 +521,25 @@ trait Converter
             $interval = CarbonInterval::make("$interval ".static::pluralUnit($unit));
         }
 
-        $period = ($this->isMutable() ? new CarbonPeriod() : new CarbonPeriodImmutable())
-            ->setDateClass(static::class)
-            ->setStartDate($this);
-
-        if ($interval) {
-            $period = $period->setDateInterval($interval);
-        }
+        $isDefaultInterval = !$interval;
+        $interval ??= CarbonInterval::day();
+        $class = $this->isMutable() ? CarbonPeriod::class : CarbonPeriodImmutable::class;
 
         if (\is_int($end) || (\is_string($end) && ctype_digit($end))) {
-            $period = $period->setRecurrences($end);
-        } elseif ($end) {
-            $period = $period->setEndDate($end);
+            $end = (int) $end;
         }
 
-        return $period;
+        $end ??= 1;
+
+        if (!\is_int($end)) {
+            $end = $this->resolveCarbon($end);
+        }
+
+        return new $class(
+            raw: [$this, CarbonInterval::make($interval), $end],
+            dateClass: static::class,
+            isDefaultInterval: $isDefaultInterval,
+        );
     }
 
     /**

@@ -17,9 +17,11 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\FilterNotConfiguredException;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestSuiteFilterProcessor
+final readonly class TestSuiteFilterProcessor
 {
     /**
      * @throws Event\RuntimeException
@@ -32,8 +34,10 @@ final class TestSuiteFilterProcessor
         if (!$configuration->hasFilter() &&
             !$configuration->hasGroups() &&
             !$configuration->hasExcludeGroups() &&
+            !$configuration->hasExcludeFilter() &&
             !$configuration->hasTestsCovering() &&
-            !$configuration->hasTestsUsing()) {
+            !$configuration->hasTestsUsing() &&
+            !$configuration->hasTestsRequiringPhpExtension()) {
             return;
         }
 
@@ -67,8 +71,23 @@ final class TestSuiteFilterProcessor
             );
         }
 
+        if ($configuration->hasTestsRequiringPhpExtension()) {
+            $factory->addIncludeGroupFilter(
+                array_map(
+                    static fn (string $name): string => '__phpunit_requires_php_extension' . $name,
+                    $configuration->testsRequiringPhpExtension(),
+                ),
+            );
+        }
+
+        if ($configuration->hasExcludeFilter()) {
+            $factory->addExcludeNameFilter(
+                $configuration->excludeFilter(),
+            );
+        }
+
         if ($configuration->hasFilter()) {
-            $factory->addNameFilter(
+            $factory->addIncludeNameFilter(
                 $configuration->filter(),
             );
         }

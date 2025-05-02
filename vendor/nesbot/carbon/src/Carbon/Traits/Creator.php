@@ -146,7 +146,8 @@ trait Creator
             return clone $date;
         }
 
-        $instance = new static($date->format('Y-m-d H:i:s.u'), $date->getTimezone());
+        $instance = parent::createFromFormat('U.u', $date->format('U.u'))
+            ->setTimezone($date->getTimezone());
 
         if ($date instanceof CarbonInterface) {
             $settings = $date->getSettings();
@@ -306,13 +307,13 @@ trait Creator
      * If $hour is not null then the default values for $minute and $second
      * will be 0.
      *
-     * @param DateTimeInterface|int|null   $year
-     * @param int|null                     $month
-     * @param int|null                     $day
-     * @param int|null                     $hour
-     * @param int|null                     $minute
-     * @param int|null                     $second
-     * @param DateTimeZone|string|int|null $timezone
+     * @param DateTimeInterface|string|int|null $year
+     * @param int|null                          $month
+     * @param int|null                          $day
+     * @param int|null                          $hour
+     * @param int|null                          $minute
+     * @param int|null                          $second
+     * @param DateTimeZone|string|int|null      $timezone
      *
      * @throws InvalidFormatException
      *
@@ -368,7 +369,7 @@ trait Creator
         }
 
         $second = ($second < 10 ? '0' : '').number_format($second, 6);
-        $instance = static::rawCreateFromFormat('!Y-n-j G:i:s.u', sprintf('%s-%s-%s %s:%02s:%02s', $year, $month, $day, $hour, $minute, $second), $timezone);
+        $instance = static::rawCreateFromFormat('!Y-n-j G:i:s.u', \sprintf('%s-%s-%s %s:%02s:%02s', $year, $month, $day, $hour, $minute, $second), $timezone);
 
         if ($instance && $fixYear !== null) {
             $instance = $instance->addYears($fixYear);
@@ -643,6 +644,19 @@ trait Creator
     {
         $function = static::$createFromFormatFunction;
 
+        // format is a single numeric unit
+        if (\is_int($time) && \in_array(ltrim($format, '!'), ['U', 'Y', 'y', 'X', 'x', 'm', 'n', 'd', 'j', 'w', 'W', 'H', 'h', 'G', 'g', 'i', 's', 'u', 'z', 'v'], true)) {
+            $time = (string) $time;
+        }
+
+        if (!\is_string($time)) {
+            @trigger_error(
+                'createFromFormat() $time parameter will only accept string or integer for 1-letter format representing a numeric unit in the next version',
+                \E_USER_DEPRECATED,
+            );
+            $time = (string) $time;
+        }
+
         if (!$function) {
             return static::rawCreateFromFormat($format, $time, $timezone);
         }
@@ -860,7 +874,7 @@ trait Creator
      *
      * @return static|null
      */
-    public static function make($var): ?self
+    public static function make($var, DateTimeZone|string|null $timezone = null): ?self
     {
         if ($var instanceof DateTimeInterface) {
             return static::instance($var);
@@ -875,7 +889,7 @@ trait Creator
                 !preg_match('/^R\d/', $var) &&
                 preg_match('/[a-z\d]/i', $var)
             ) {
-                $date = static::parse($var);
+                $date = static::parse($var, $timezone);
             }
         }
 

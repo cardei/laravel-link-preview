@@ -13,6 +13,8 @@ use function sprintf;
 use PHPUnit\Util\Exporter;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class ExceptionCode extends Constraint
@@ -48,8 +50,8 @@ final class ExceptionCode extends Constraint
     {
         return sprintf(
             '%s is equal to expected exception code %s',
-            Exporter::export($other, true),
-            Exporter::export($this->expectedCode, true),
+            Exporter::export($other),
+            Exporter::export($this->expectedCode),
         );
     }
 }

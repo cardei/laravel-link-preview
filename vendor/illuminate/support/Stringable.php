@@ -112,6 +112,28 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
     }
 
     /**
+     * Remove the given string if it exists at the start of the current string.
+     *
+     * @param  string|array  $needle
+     * @return static
+     */
+    public function chopStart($needle)
+    {
+        return new static(Str::chopStart($this->value, $needle));
+    }
+
+    /**
+     * Remove the given string if it exists at the end of the current string.
+     *
+     * @param  string|array  $needle
+     * @return static
+     */
+    public function chopEnd($needle)
+    {
+        return new static(Str::chopEnd($this->value, $needle));
+    }
+
+    /**
      * Get the basename of the class path.
      *
      * @return static
@@ -214,6 +236,17 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
     }
 
     /**
+     * Replace consecutive instances of a given character with a single character.
+     *
+     * @param  string  $character
+     * @return static
+     */
+    public function deduplicate(string $character = ' ')
+    {
+        return new static(Str::deduplicate($this->value, $character));
+    }
+
+    /**
      * Get the parent directory's path.
      *
      * @param  int  $levels
@@ -263,7 +296,7 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
     }
 
     /**
-     * Explode the string into an array.
+     * Explode the string into a collection.
      *
      * @param  string  $delimiter
      * @param  int  $limit
@@ -271,7 +304,7 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      */
     public function explode($delimiter, $limit = PHP_INT_MAX)
     {
-        return collect(explode($delimiter, $this->value, $limit));
+        return new Collection(explode($delimiter, $this->value, $limit));
     }
 
     /**
@@ -285,12 +318,12 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
     public function split($pattern, $limit = -1, $flags = 0)
     {
         if (filter_var($pattern, FILTER_VALIDATE_INT) !== false) {
-            return collect(mb_str_split($this->value, $pattern));
+            return new Collection(mb_str_split($this->value, $pattern));
         }
 
         $segments = preg_split($pattern, $this->value, $limit, $flags);
 
-        return ! empty($segments) ? collect($segments) : collect();
+        return ! empty($segments) ? new Collection($segments) : new Collection;
     }
 
     /**
@@ -308,11 +341,12 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      * Determine if a given string matches a given pattern.
      *
      * @param  string|iterable<string>  $pattern
+     * @param  bool  $ignoreCase
      * @return bool
      */
-    public function is($pattern)
+    public function is($pattern, $ignoreCase = false)
     {
-        return Str::is($pattern, $this->value);
+        return Str::is($pattern, $this->value, $ignoreCase);
     }
 
     /**
@@ -411,11 +445,12 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      *
      * @param  int  $limit
      * @param  string  $end
+     * @param  bool  $preserveWords
      * @return static
      */
-    public function limit($limit = 100, $end = '...')
+    public function limit($limit = 100, $end = '...', $preserveWords = false)
     {
-        return new static(Str::limit($this->value, $limit, $end));
+        return new static(Str::limit($this->value, $limit, $end, $preserveWords));
     }
 
     /**
@@ -432,22 +467,24 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      * Convert GitHub flavored Markdown into HTML.
      *
      * @param  array  $options
+     * @param  array  $extensions
      * @return static
      */
-    public function markdown(array $options = [])
+    public function markdown(array $options = [], array $extensions = [])
     {
-        return new static(Str::markdown($this->value, $options));
+        return new static(Str::markdown($this->value, $options, $extensions));
     }
 
     /**
      * Convert inline Markdown into HTML.
      *
      * @param  array  $options
+     * @param  array  $extensions
      * @return static
      */
-    public function inlineMarkdown(array $options = [])
+    public function inlineMarkdown(array $options = [], array $extensions = [])
     {
-        return new static(Str::inlineMarkdown($this->value, $options));
+        return new static(Str::inlineMarkdown($this->value, $options, $extensions));
     }
 
     /**
@@ -599,6 +636,17 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
     }
 
     /**
+     * Pluralize the last word of an English, Pascal caps case string.
+     *
+     * @param  int|array|\Countable  $count
+     * @return static
+     */
+    public function pluralPascal($count = 2)
+    {
+        return new static(Str::pluralStudly($this->value, $count));
+    }
+
+    /**
      * Find the multi-byte safe position of the first occurrence of the given substring.
      *
      * @param  string  $needle
@@ -732,7 +780,7 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      * Replace the patterns matching the given regular expression.
      *
      * @param  array|string  $pattern
-     * @param  \Closure|string  $replace
+     * @param  \Closure|string[]|string  $replace
      * @param  int  $limit
      * @return static
      */
@@ -753,7 +801,7 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      */
     public function scan($format)
     {
-        return collect(sscanf($this->value, $format));
+        return new Collection(sscanf($this->value, $format));
     }
 
     /**
@@ -896,6 +944,16 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
     }
 
     /**
+     * Convert the string to Pascal case.
+     *
+     * @return static
+     */
+    public function pascal()
+    {
+        return new static(Str::pascal($this->value));
+    }
+
+    /**
      * Returns the portion of the string specified by the start and length parameters.
      *
      * @param  int  $start
@@ -968,7 +1026,7 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      */
     public function trim($characters = null)
     {
-        return new static(trim(...array_merge([$this->value], func_get_args())));
+        return new static(Str::trim(...array_merge([$this->value], func_get_args())));
     }
 
     /**
@@ -979,7 +1037,7 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      */
     public function ltrim($characters = null)
     {
-        return new static(ltrim(...array_merge([$this->value], func_get_args())));
+        return new static(Str::ltrim(...array_merge([$this->value], func_get_args())));
     }
 
     /**
@@ -990,7 +1048,7 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      */
     public function rtrim($characters = null)
     {
-        return new static(rtrim(...array_merge([$this->value], func_get_args())));
+        return new static(Str::rtrim(...array_merge([$this->value], func_get_args())));
     }
 
     /**
@@ -1020,7 +1078,7 @@ class Stringable implements JsonSerializable, ArrayAccess, BaseStringable
      */
     public function ucsplit()
     {
-        return collect(Str::ucsplit($this->value));
+        return new Collection(Str::ucsplit($this->value));
     }
 
     /**

@@ -41,13 +41,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  * @method ?CarbonImmutable    createFromLocaleIsoFormat(string $format, string $locale, string $time, $timezone = null)                                            Create a Carbon instance from a specific ISO format and a string in a given language.
  * @method CarbonImmutable     createFromTime($hour = 0, $minute = 0, $second = 0, $timezone = null)                                                                Create a Carbon instance from just a time. The date portion is set to today.
  * @method CarbonImmutable     createFromTimeString(string $time, DateTimeZone|string|int|null $timezone = null)                                                    Create a Carbon instance from a time string. The date portion is set to today.
- * @method CarbonImmutable     createFromTimestamp(string|int|float $timestamp, DateTimeZone|string|int|null $timezone = null)                                      Create a Carbon instance from a timestamp and set the timezone (use default one if not specified).
+ * @method CarbonImmutable     createFromTimestamp(string|int|float $timestamp, DateTimeZone|string|int|null $timezone = null)                                      Create a Carbon instance from a timestamp and set the timezone (UTC by default).
  *                                                                                                                                                                  Timestamp input can be given as int, float or a string containing one or more numbers.
  * @method CarbonImmutable     createFromTimestampMs(string|int|float $timestamp, DateTimeZone|string|int|null $timezone = null)                                    Create a Carbon instance from a timestamp in milliseconds.
  *                                                                                                                                                                  Timestamp input can be given as int, float or a string containing one or more numbers.
  * @method CarbonImmutable     createFromTimestampMsUTC($timestamp)                                                                                                 Create a Carbon instance from a timestamp in milliseconds.
  *                                                                                                                                                                  Timestamp input can be given as int, float or a string containing one or more numbers.
- * @method CarbonImmutable     createFromTimestampUTC(string|int|float $timestamp)                                                                                  Create a Carbon instance from an timestamp keeping the timezone to UTC.
+ * @method CarbonImmutable     createFromTimestampUTC(string|int|float $timestamp)                                                                                  Create a Carbon instance from a timestamp keeping the timezone to UTC.
  *                                                                                                                                                                  Timestamp input can be given as int, float or a string containing one or more numbers.
  * @method CarbonImmutable     createMidnightDate($year = null, $month = null, $day = null, $timezone = null)                                                       Create a Carbon instance from just a date. The time portion is set to midnight.
  * @method ?CarbonImmutable    createSafe($year = null, $month = null, $day = null, $hour = null, $minute = null, $second = null, $timezone = null)                 Create a new safe Carbon instance from a specific date and time.
@@ -93,7 +93,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *                                                                                                                                                                  Support is considered enabled if the 4 sentences are translated in the given locale.
  * @method bool                localeHasShortUnits(string $locale)                                                                                                  Returns true if the given locale is internally supported and has short-units support.
  *                                                                                                                                                                  Support is considered enabled if either year, day or hour has a short variant translated.
- * @method ?CarbonImmutable    make($var)                                                                                                                           Make a Carbon instance from given variable if possible.
+ * @method ?CarbonImmutable    make($var, DateTimeZone|string|null $timezone = null)                                                                                Make a Carbon instance from given variable if possible.
  *                                                                                                                                                                  Always return a new instance. Parse only strings and only these likely to be dates (skip intervals
  *                                                                                                                                                                  and recurrences). Throw an exception for invalid format, but otherwise return null.
  * @method void                mixin(object|string $mixin)                                                                                                          Mix another object into the class.
@@ -148,7 +148,7 @@ class FactoryImmutable extends Factory implements ClockInterface
      */
     public static function getInstance(): Factory
     {
-        return self::$currentClock?->getFactory() ?? self::$defaultInstance ??= new self();
+        return self::$currentClock?->getFactory() ?? self::getDefaultInstance();
     }
 
     /**

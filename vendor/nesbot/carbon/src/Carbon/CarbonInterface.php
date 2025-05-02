@@ -264,58 +264,58 @@ use Throwable;
  * @method        bool             isThursday()                                                                       Checks if the instance day is thursday.
  * @method        bool             isFriday()                                                                         Checks if the instance day is friday.
  * @method        bool             isSaturday()                                                                       Checks if the instance day is saturday.
- * @method        bool             isSameYear(Carbon|DateTimeInterface|string|null $date = null)                      Checks if the given date is in the same year as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameYear(DateTimeInterface|string $date)                                         Checks if the given date is in the same year as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentYear()                                                                    Checks if the instance is in the same year as the current moment.
  * @method        bool             isNextYear()                                                                       Checks if the instance is in the same year as the current moment next year.
  * @method        bool             isLastYear()                                                                       Checks if the instance is in the same year as the current moment last year.
  * @method        bool             isCurrentMonth()                                                                   Checks if the instance is in the same month as the current moment.
  * @method        bool             isNextMonth()                                                                      Checks if the instance is in the same month as the current moment next month.
  * @method        bool             isLastMonth()                                                                      Checks if the instance is in the same month as the current moment last month.
- * @method        bool             isSameWeek(Carbon|DateTimeInterface|string|null $date = null)                      Checks if the given date is in the same week as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameWeek(DateTimeInterface|string $date)                                         Checks if the given date is in the same week as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentWeek()                                                                    Checks if the instance is in the same week as the current moment.
  * @method        bool             isNextWeek()                                                                       Checks if the instance is in the same week as the current moment next week.
  * @method        bool             isLastWeek()                                                                       Checks if the instance is in the same week as the current moment last week.
- * @method        bool             isSameDay(Carbon|DateTimeInterface|string|null $date = null)                       Checks if the given date is in the same day as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameDay(DateTimeInterface|string $date)                                          Checks if the given date is in the same day as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentDay()                                                                     Checks if the instance is in the same day as the current moment.
  * @method        bool             isNextDay()                                                                        Checks if the instance is in the same day as the current moment next day.
  * @method        bool             isLastDay()                                                                        Checks if the instance is in the same day as the current moment last day.
- * @method        bool             isSameHour(Carbon|DateTimeInterface|string|null $date = null)                      Checks if the given date is in the same hour as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameHour(DateTimeInterface|string $date)                                         Checks if the given date is in the same hour as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentHour()                                                                    Checks if the instance is in the same hour as the current moment.
  * @method        bool             isNextHour()                                                                       Checks if the instance is in the same hour as the current moment next hour.
  * @method        bool             isLastHour()                                                                       Checks if the instance is in the same hour as the current moment last hour.
- * @method        bool             isSameMinute(Carbon|DateTimeInterface|string|null $date = null)                    Checks if the given date is in the same minute as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameMinute(DateTimeInterface|string $date)                                       Checks if the given date is in the same minute as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentMinute()                                                                  Checks if the instance is in the same minute as the current moment.
  * @method        bool             isNextMinute()                                                                     Checks if the instance is in the same minute as the current moment next minute.
  * @method        bool             isLastMinute()                                                                     Checks if the instance is in the same minute as the current moment last minute.
- * @method        bool             isSameSecond(Carbon|DateTimeInterface|string|null $date = null)                    Checks if the given date is in the same second as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameSecond(DateTimeInterface|string $date)                                       Checks if the given date is in the same second as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentSecond()                                                                  Checks if the instance is in the same second as the current moment.
  * @method        bool             isNextSecond()                                                                     Checks if the instance is in the same second as the current moment next second.
  * @method        bool             isLastSecond()                                                                     Checks if the instance is in the same second as the current moment last second.
- * @method        bool             isSameMilli(Carbon|DateTimeInterface|string|null $date = null)                     Checks if the given date is in the same millisecond as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameMilli(DateTimeInterface|string $date)                                        Checks if the given date is in the same millisecond as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentMilli()                                                                   Checks if the instance is in the same millisecond as the current moment.
  * @method        bool             isNextMilli()                                                                      Checks if the instance is in the same millisecond as the current moment next millisecond.
  * @method        bool             isLastMilli()                                                                      Checks if the instance is in the same millisecond as the current moment last millisecond.
- * @method        bool             isSameMillisecond(Carbon|DateTimeInterface|string|null $date = null)               Checks if the given date is in the same millisecond as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameMillisecond(DateTimeInterface|string $date)                                  Checks if the given date is in the same millisecond as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentMillisecond()                                                             Checks if the instance is in the same millisecond as the current moment.
  * @method        bool             isNextMillisecond()                                                                Checks if the instance is in the same millisecond as the current moment next millisecond.
  * @method        bool             isLastMillisecond()                                                                Checks if the instance is in the same millisecond as the current moment last millisecond.
- * @method        bool             isSameMicro(Carbon|DateTimeInterface|string|null $date = null)                     Checks if the given date is in the same microsecond as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameMicro(DateTimeInterface|string $date)                                        Checks if the given date is in the same microsecond as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentMicro()                                                                   Checks if the instance is in the same microsecond as the current moment.
  * @method        bool             isNextMicro()                                                                      Checks if the instance is in the same microsecond as the current moment next microsecond.
  * @method        bool             isLastMicro()                                                                      Checks if the instance is in the same microsecond as the current moment last microsecond.
- * @method        bool             isSameMicrosecond(Carbon|DateTimeInterface|string|null $date = null)               Checks if the given date is in the same microsecond as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameMicrosecond(DateTimeInterface|string $date)                                  Checks if the given date is in the same microsecond as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentMicrosecond()                                                             Checks if the instance is in the same microsecond as the current moment.
  * @method        bool             isNextMicrosecond()                                                                Checks if the instance is in the same microsecond as the current moment next microsecond.
  * @method        bool             isLastMicrosecond()                                                                Checks if the instance is in the same microsecond as the current moment last microsecond.
- * @method        bool             isSameDecade(Carbon|DateTimeInterface|string|null $date = null)                    Checks if the given date is in the same decade as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameDecade(DateTimeInterface|string $date)                                       Checks if the given date is in the same decade as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentDecade()                                                                  Checks if the instance is in the same decade as the current moment.
  * @method        bool             isNextDecade()                                                                     Checks if the instance is in the same decade as the current moment next decade.
  * @method        bool             isLastDecade()                                                                     Checks if the instance is in the same decade as the current moment last decade.
- * @method        bool             isSameCentury(Carbon|DateTimeInterface|string|null $date = null)                   Checks if the given date is in the same century as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameCentury(DateTimeInterface|string $date)                                      Checks if the given date is in the same century as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentCentury()                                                                 Checks if the instance is in the same century as the current moment.
  * @method        bool             isNextCentury()                                                                    Checks if the instance is in the same century as the current moment next century.
  * @method        bool             isLastCentury()                                                                    Checks if the instance is in the same century as the current moment last century.
- * @method        bool             isSameMillennium(Carbon|DateTimeInterface|string|null $date = null)                Checks if the given date is in the same millennium as the instance. If null passed, compare to now (with the same timezone).
+ * @method        bool             isSameMillennium(DateTimeInterface|string $date)                                   Checks if the given date is in the same millennium as the instance. If null passed, compare to now (with the same timezone).
  * @method        bool             isCurrentMillennium()                                                              Checks if the instance is in the same millennium as the current moment.
  * @method        bool             isNextMillennium()                                                                 Checks if the instance is in the same millennium as the current moment next millennium.
  * @method        bool             isLastMillennium()                                                                 Checks if the instance is in the same millennium as the current moment last millennium.
@@ -522,81 +522,96 @@ use Throwable;
  * @method        CarbonInterface  addWeekday()                                                                       Add one weekday to the instance (using date interval).
  * @method        CarbonInterface  subWeekdays(int|float $value = 1)                                                  Sub weekdays (the $value count passed in) to the instance (using date interval).
  * @method        CarbonInterface  subWeekday()                                                                       Sub one weekday to the instance (using date interval).
- * @method        CarbonInterface  addRealMicros(int|float $value = 1)                                                Add microseconds (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealMicro()                                                                     Add one microsecond to the instance (using timestamp).
- * @method        CarbonInterface  subRealMicros(int|float $value = 1)                                                Sub microseconds (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealMicro()                                                                     Sub one microsecond to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCMicros(int|float $value = 1)                                                 Add microseconds (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCMicro()                                                                      Add one microsecond to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMicros(int|float $value = 1)                                                 Sub microseconds (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMicro()                                                                      Sub one microsecond to the instance (using timestamp).
  * @method        CarbonPeriod     microsUntil($endDate = null, int|float $factor = 1)                                Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each microsecond or every X microseconds if a factor is given.
- * @method        CarbonInterface  addRealMicroseconds(int|float $value = 1)                                          Add microseconds (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealMicrosecond()                                                               Add one microsecond to the instance (using timestamp).
- * @method        CarbonInterface  subRealMicroseconds(int|float $value = 1)                                          Sub microseconds (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealMicrosecond()                                                               Sub one microsecond to the instance (using timestamp).
+ * @method        float            diffInUTCMicros(DateTimeInterface|string|null $date, bool $absolute = false)       Convert current and given date in UTC timezone and return a floating number of microseconds.
+ * @method        CarbonInterface  addUTCMicroseconds(int|float $value = 1)                                           Add microseconds (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCMicrosecond()                                                                Add one microsecond to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMicroseconds(int|float $value = 1)                                           Sub microseconds (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMicrosecond()                                                                Sub one microsecond to the instance (using timestamp).
  * @method        CarbonPeriod     microsecondsUntil($endDate = null, int|float $factor = 1)                          Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each microsecond or every X microseconds if a factor is given.
- * @method        CarbonInterface  addRealMillis(int|float $value = 1)                                                Add milliseconds (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealMilli()                                                                     Add one millisecond to the instance (using timestamp).
- * @method        CarbonInterface  subRealMillis(int|float $value = 1)                                                Sub milliseconds (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealMilli()                                                                     Sub one millisecond to the instance (using timestamp).
+ * @method        float            diffInUTCMicroseconds(DateTimeInterface|string|null $date, bool $absolute = false) Convert current and given date in UTC timezone and return a floating number of microseconds.
+ * @method        CarbonInterface  addUTCMillis(int|float $value = 1)                                                 Add milliseconds (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCMilli()                                                                      Add one millisecond to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMillis(int|float $value = 1)                                                 Sub milliseconds (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMilli()                                                                      Sub one millisecond to the instance (using timestamp).
  * @method        CarbonPeriod     millisUntil($endDate = null, int|float $factor = 1)                                Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each millisecond or every X milliseconds if a factor is given.
- * @method        CarbonInterface  addRealMilliseconds(int|float $value = 1)                                          Add milliseconds (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealMillisecond()                                                               Add one millisecond to the instance (using timestamp).
- * @method        CarbonInterface  subRealMilliseconds(int|float $value = 1)                                          Sub milliseconds (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealMillisecond()                                                               Sub one millisecond to the instance (using timestamp).
+ * @method        float            diffInUTCMillis(DateTimeInterface|string|null $date, bool $absolute = false)       Convert current and given date in UTC timezone and return a floating number of milliseconds.
+ * @method        CarbonInterface  addUTCMilliseconds(int|float $value = 1)                                           Add milliseconds (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCMillisecond()                                                                Add one millisecond to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMilliseconds(int|float $value = 1)                                           Sub milliseconds (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMillisecond()                                                                Sub one millisecond to the instance (using timestamp).
  * @method        CarbonPeriod     millisecondsUntil($endDate = null, int|float $factor = 1)                          Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each millisecond or every X milliseconds if a factor is given.
- * @method        CarbonInterface  addRealSeconds(int|float $value = 1)                                               Add seconds (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealSecond()                                                                    Add one second to the instance (using timestamp).
- * @method        CarbonInterface  subRealSeconds(int|float $value = 1)                                               Sub seconds (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealSecond()                                                                    Sub one second to the instance (using timestamp).
+ * @method        float            diffInUTCMilliseconds(DateTimeInterface|string|null $date, bool $absolute = false) Convert current and given date in UTC timezone and return a floating number of milliseconds.
+ * @method        CarbonInterface  addUTCSeconds(int|float $value = 1)                                                Add seconds (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCSecond()                                                                     Add one second to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCSeconds(int|float $value = 1)                                                Sub seconds (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCSecond()                                                                     Sub one second to the instance (using timestamp).
  * @method        CarbonPeriod     secondsUntil($endDate = null, int|float $factor = 1)                               Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each second or every X seconds if a factor is given.
- * @method        CarbonInterface  addRealMinutes(int|float $value = 1)                                               Add minutes (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealMinute()                                                                    Add one minute to the instance (using timestamp).
- * @method        CarbonInterface  subRealMinutes(int|float $value = 1)                                               Sub minutes (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealMinute()                                                                    Sub one minute to the instance (using timestamp).
+ * @method        float            diffInUTCSeconds(DateTimeInterface|string|null $date, bool $absolute = false)      Convert current and given date in UTC timezone and return a floating number of seconds.
+ * @method        CarbonInterface  addUTCMinutes(int|float $value = 1)                                                Add minutes (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCMinute()                                                                     Add one minute to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMinutes(int|float $value = 1)                                                Sub minutes (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMinute()                                                                     Sub one minute to the instance (using timestamp).
  * @method        CarbonPeriod     minutesUntil($endDate = null, int|float $factor = 1)                               Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each minute or every X minutes if a factor is given.
- * @method        CarbonInterface  addRealHours(int|float $value = 1)                                                 Add hours (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealHour()                                                                      Add one hour to the instance (using timestamp).
- * @method        CarbonInterface  subRealHours(int|float $value = 1)                                                 Sub hours (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealHour()                                                                      Sub one hour to the instance (using timestamp).
+ * @method        float            diffInUTCMinutes(DateTimeInterface|string|null $date, bool $absolute = false)      Convert current and given date in UTC timezone and return a floating number of minutes.
+ * @method        CarbonInterface  addUTCHours(int|float $value = 1)                                                  Add hours (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCHour()                                                                       Add one hour to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCHours(int|float $value = 1)                                                  Sub hours (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCHour()                                                                       Sub one hour to the instance (using timestamp).
  * @method        CarbonPeriod     hoursUntil($endDate = null, int|float $factor = 1)                                 Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each hour or every X hours if a factor is given.
- * @method        CarbonInterface  addRealDays(int|float $value = 1)                                                  Add days (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealDay()                                                                       Add one day to the instance (using timestamp).
- * @method        CarbonInterface  subRealDays(int|float $value = 1)                                                  Sub days (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealDay()                                                                       Sub one day to the instance (using timestamp).
+ * @method        float            diffInUTCHours(DateTimeInterface|string|null $date, bool $absolute = false)        Convert current and given date in UTC timezone and return a floating number of hours.
+ * @method        CarbonInterface  addUTCDays(int|float $value = 1)                                                   Add days (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCDay()                                                                        Add one day to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCDays(int|float $value = 1)                                                   Sub days (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCDay()                                                                        Sub one day to the instance (using timestamp).
  * @method        CarbonPeriod     daysUntil($endDate = null, int|float $factor = 1)                                  Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each day or every X days if a factor is given.
- * @method        CarbonInterface  addRealWeeks(int|float $value = 1)                                                 Add weeks (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealWeek()                                                                      Add one week to the instance (using timestamp).
- * @method        CarbonInterface  subRealWeeks(int|float $value = 1)                                                 Sub weeks (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealWeek()                                                                      Sub one week to the instance (using timestamp).
+ * @method        float            diffInUTCDays(DateTimeInterface|string|null $date, bool $absolute = false)         Convert current and given date in UTC timezone and return a floating number of days.
+ * @method        CarbonInterface  addUTCWeeks(int|float $value = 1)                                                  Add weeks (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCWeek()                                                                       Add one week to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCWeeks(int|float $value = 1)                                                  Sub weeks (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCWeek()                                                                       Sub one week to the instance (using timestamp).
  * @method        CarbonPeriod     weeksUntil($endDate = null, int|float $factor = 1)                                 Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each week or every X weeks if a factor is given.
- * @method        CarbonInterface  addRealMonths(int|float $value = 1)                                                Add months (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealMonth()                                                                     Add one month to the instance (using timestamp).
- * @method        CarbonInterface  subRealMonths(int|float $value = 1)                                                Sub months (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealMonth()                                                                     Sub one month to the instance (using timestamp).
+ * @method        float            diffInUTCWeeks(DateTimeInterface|string|null $date, bool $absolute = false)        Convert current and given date in UTC timezone and return a floating number of weeks.
+ * @method        CarbonInterface  addUTCMonths(int|float $value = 1)                                                 Add months (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCMonth()                                                                      Add one month to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMonths(int|float $value = 1)                                                 Sub months (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMonth()                                                                      Sub one month to the instance (using timestamp).
  * @method        CarbonPeriod     monthsUntil($endDate = null, int|float $factor = 1)                                Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each month or every X months if a factor is given.
- * @method        CarbonInterface  addRealQuarters(int|float $value = 1)                                              Add quarters (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealQuarter()                                                                   Add one quarter to the instance (using timestamp).
- * @method        CarbonInterface  subRealQuarters(int|float $value = 1)                                              Sub quarters (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealQuarter()                                                                   Sub one quarter to the instance (using timestamp).
+ * @method        float            diffInUTCMonths(DateTimeInterface|string|null $date, bool $absolute = false)       Convert current and given date in UTC timezone and return a floating number of months.
+ * @method        CarbonInterface  addUTCQuarters(int|float $value = 1)                                               Add quarters (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCQuarter()                                                                    Add one quarter to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCQuarters(int|float $value = 1)                                               Sub quarters (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCQuarter()                                                                    Sub one quarter to the instance (using timestamp).
  * @method        CarbonPeriod     quartersUntil($endDate = null, int|float $factor = 1)                              Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each quarter or every X quarters if a factor is given.
- * @method        CarbonInterface  addRealYears(int|float $value = 1)                                                 Add years (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealYear()                                                                      Add one year to the instance (using timestamp).
- * @method        CarbonInterface  subRealYears(int|float $value = 1)                                                 Sub years (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealYear()                                                                      Sub one year to the instance (using timestamp).
+ * @method        float            diffInUTCQuarters(DateTimeInterface|string|null $date, bool $absolute = false)     Convert current and given date in UTC timezone and return a floating number of quarters.
+ * @method        CarbonInterface  addUTCYears(int|float $value = 1)                                                  Add years (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCYear()                                                                       Add one year to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCYears(int|float $value = 1)                                                  Sub years (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCYear()                                                                       Sub one year to the instance (using timestamp).
  * @method        CarbonPeriod     yearsUntil($endDate = null, int|float $factor = 1)                                 Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each year or every X years if a factor is given.
- * @method        CarbonInterface  addRealDecades(int|float $value = 1)                                               Add decades (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealDecade()                                                                    Add one decade to the instance (using timestamp).
- * @method        CarbonInterface  subRealDecades(int|float $value = 1)                                               Sub decades (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealDecade()                                                                    Sub one decade to the instance (using timestamp).
+ * @method        float            diffInUTCYears(DateTimeInterface|string|null $date, bool $absolute = false)        Convert current and given date in UTC timezone and return a floating number of years.
+ * @method        CarbonInterface  addUTCDecades(int|float $value = 1)                                                Add decades (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCDecade()                                                                     Add one decade to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCDecades(int|float $value = 1)                                                Sub decades (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCDecade()                                                                     Sub one decade to the instance (using timestamp).
  * @method        CarbonPeriod     decadesUntil($endDate = null, int|float $factor = 1)                               Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each decade or every X decades if a factor is given.
- * @method        CarbonInterface  addRealCenturies(int|float $value = 1)                                             Add centuries (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealCentury()                                                                   Add one century to the instance (using timestamp).
- * @method        CarbonInterface  subRealCenturies(int|float $value = 1)                                             Sub centuries (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealCentury()                                                                   Sub one century to the instance (using timestamp).
+ * @method        float            diffInUTCDecades(DateTimeInterface|string|null $date, bool $absolute = false)      Convert current and given date in UTC timezone and return a floating number of decades.
+ * @method        CarbonInterface  addUTCCenturies(int|float $value = 1)                                              Add centuries (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCCentury()                                                                    Add one century to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCCenturies(int|float $value = 1)                                              Sub centuries (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCCentury()                                                                    Sub one century to the instance (using timestamp).
  * @method        CarbonPeriod     centuriesUntil($endDate = null, int|float $factor = 1)                             Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each century or every X centuries if a factor is given.
- * @method        CarbonInterface  addRealMillennia(int|float $value = 1)                                             Add millennia (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  addRealMillennium()                                                                Add one millennium to the instance (using timestamp).
- * @method        CarbonInterface  subRealMillennia(int|float $value = 1)                                             Sub millennia (the $value count passed in) to the instance (using timestamp).
- * @method        CarbonInterface  subRealMillennium()                                                                Sub one millennium to the instance (using timestamp).
+ * @method        float            diffInUTCCenturies(DateTimeInterface|string|null $date, bool $absolute = false)    Convert current and given date in UTC timezone and return a floating number of centuries.
+ * @method        CarbonInterface  addUTCMillennia(int|float $value = 1)                                              Add millennia (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  addUTCMillennium()                                                                 Add one millennium to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMillennia(int|float $value = 1)                                              Sub millennia (the $value count passed in) to the instance (using timestamp).
+ * @method        CarbonInterface  subUTCMillennium()                                                                 Sub one millennium to the instance (using timestamp).
  * @method        CarbonPeriod     millenniaUntil($endDate = null, int|float $factor = 1)                             Return an iterable period from current date to given end (string, DateTime or Carbon instance) for each millennium or every X millennia if a factor is given.
+ * @method        float            diffInUTCMillennia(DateTimeInterface|string|null $date, bool $absolute = false)    Convert current and given date in UTC timezone and return a floating number of millennia.
  * @method        CarbonInterface  roundYear(float $precision = 1, string $function = "round")                        Round the current instance year with given precision using the given function.
  * @method        CarbonInterface  roundYears(float $precision = 1, string $function = "round")                       Round the current instance year with given precision using the given function.
  * @method        CarbonInterface  floorYear(float $precision = 1)                                                    Truncate the current instance year with given precision.
@@ -1065,9 +1080,9 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @example $date->add(15, 'days')
      * @example $date->add(CarbonInterval::days(4))
      *
-     * @param string|DateInterval|Closure|CarbonConverterInterface $unit
-     * @param int|float                                            $value
-     * @param bool|null                                            $overflow
+     * @param Unit|string|DateInterval|Closure|CarbonConverterInterface $unit
+     * @param int|float                                                 $value
+     * @param bool|null                                                 $overflow
      *
      * @return static
      */
@@ -1075,6 +1090,8 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function add($unit, $value = 1, ?bool $overflow = null): static;
 
     /**
+     * @deprecated Prefer to use add addUTCUnit() which more accurately defines what it's doing.
+     *
      * Add seconds to the instance using timestamp. Positive $value travels
      * forward while negative $value travels into the past.
      *
@@ -1086,15 +1103,20 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function addRealUnit(string $unit, $value = 1): static;
 
     /**
-     * Add given units to the current instance.
+     * Add seconds to the instance using timestamp. Positive $value travels
+     * forward while negative $value travels into the past.
      *
-     * @param string    $unit
-     * @param int|float $value
-     * @param bool|null $overflow
+     * @param string         $unit
+     * @param int|float|null $value
      *
      * @return static
      */
-    public function addUnit(string $unit, $value = 1, ?bool $overflow = null): static;
+    public function addUTCUnit(string $unit, $value = 1): static;
+
+    /**
+     * Add given units to the current instance.
+     */
+    public function addUnit(Unit|string $unit, $value = 1, ?bool $overflow = null): static;
 
     /**
      * Add any unit to a new value without overflowing current other unit given.
@@ -1220,11 +1242,6 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * Carbon::canBeCreatedFromFormat('11:12:45', 'h:i:s'); // true
      * Carbon::canBeCreatedFromFormat('13:12:45', 'h:i:s'); // false
      * ```
-     *
-     * @param string $date
-     * @param string $format
-     *
-     * @return bool
      */
     public static function canBeCreatedFromFormat(?string $date, string $format): bool;
 
@@ -1329,13 +1346,13 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * If $hour is not null then the default values for $minute and $second
      * will be 0.
      *
-     * @param DateTimeInterface|int|null   $year
-     * @param int|null                     $month
-     * @param int|null                     $day
-     * @param int|null                     $hour
-     * @param int|null                     $minute
-     * @param int|null                     $second
-     * @param DateTimeZone|string|int|null $timezone
+     * @param DateTimeInterface|string|int|null $year
+     * @param int|null                          $month
+     * @param int|null                          $day
+     * @param int|null                          $hour
+     * @param int|null                          $minute
+     * @param int|null                          $second
+     * @param DateTimeZone|string|int|null      $timezone
      *
      * @throws InvalidFormatException
      *
@@ -1436,7 +1453,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public static function createFromTimeString(string $time, DateTimeZone|string|int|null $timezone = null): static;
 
     /**
-     * Create a Carbon instance from a timestamp and set the timezone (use default one if not specified).
+     * Create a Carbon instance from a timestamp and set the timezone (UTC by default).
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      */
@@ -1461,7 +1478,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public static function createFromTimestampMsUTC($timestamp): static;
 
     /**
-     * Create a Carbon instance from an timestamp keeping the timezone to UTC.
+     * Create a Carbon instance from a timestamp keeping the timezone to UTC.
      *
      * Timestamp input can be given as int, float or a string containing one or more numbers.
      */
@@ -1597,25 +1614,30 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      *                                                            if null passed, now will be used as comparison reference;
      *                                                            if any other type, it will be converted to date and used as reference.
      * @param int|array                                  $syntax  if array passed, parameters will be extracted from it, the array may contains:
-     *                                                            - 'syntax' entry (see below)
-     *                                                            - 'short' entry (see below)
-     *                                                            - 'parts' entry (see below)
-     *                                                            - 'options' entry (see below)
-     *                                                            - 'skip' entry, list of units to skip (array of strings or a single string,
+     *                                                            ⦿ 'syntax' entry (see below)
+     *                                                            ⦿ 'short' entry (see below)
+     *                                                            ⦿ 'parts' entry (see below)
+     *                                                            ⦿ 'options' entry (see below)
+     *                                                            ⦿ 'skip' entry, list of units to skip (array of strings or a single string,
      *                                                            ` it can be the unit name (singular or plural) or its shortcut
      *                                                            ` (y, m, w, d, h, min, s, ms, µs).
-     *                                                            - 'aUnit' entry, prefer "an hour" over "1 hour" if true
-     *                                                            - 'join' entry determines how to join multiple parts of the string
+     *                                                            ⦿ 'aUnit' entry, prefer "an hour" over "1 hour" if true
+     *                                                            ⦿ 'altNumbers' entry, use alternative numbers if available
+     *                                                            ` (from the current language if true is passed, from the given language(s)
+     *                                                            ` if array or string is passed)
+     *                                                            ⦿ 'join' entry determines how to join multiple parts of the string
      *                                                            `  - if $join is a string, it's used as a joiner glue
      *                                                            `  - if $join is a callable/closure, it get the list of string and should return a string
      *                                                            `  - if $join is an array, the first item will be the default glue, and the second item
      *                                                            `    will be used instead of the glue for the last item
      *                                                            `  - if $join is true, it will be guessed from the locale ('list' translation file entry)
      *                                                            `  - if $join is missing, a space will be used as glue
-     *                                                            - 'other' entry (see above)
-     *                                                            - 'minimumUnit' entry determines the smallest unit of time to display can be long or
+     *                                                            ⦿ 'other' entry (see above)
+     *                                                            ⦿ 'minimumUnit' entry determines the smallest unit of time to display can be long or
      *                                                            `  short form of the units, e.g. 'hour' or 'h' (default value: s)
-     *                                                            if int passed, it add modifiers:
+     *                                                            ⦿ 'locale' language in which the diff should be output (has no effect if 'translator' key is set)
+     *                                                            ⦿ 'translator' a custom translator to use to translator the output.
+     *                                                            if int passed, it adds modifiers:
      *                                                            Possible values:
      *                                                            - CarbonInterface::DIFF_ABSOLUTE          no modifiers
      *                                                            - CarbonInterface::DIFF_RELATIVE_TO_NOW   add ago/from now modifier
@@ -1628,17 +1650,18 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function diffForHumans($other = null, $syntax = null, $short = false, $parts = 1, $options = null): string;
 
     /**
-     * Get the difference in days rounded down.
+     * Get the difference in days.
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
+     * @param bool                                                   $utc      Always convert dates to UTC before comparing (if not set, it will do it only if timezones are different)
      *
      * @return float
      */
-    public function diffInDays($date = null, bool $absolute = false): float;
+    public function diffInDays($date = null, bool $absolute = false, bool $utc = false): float;
 
     /**
-     * Get the difference in days using a filter closure rounded down.
+     * Get the difference in days using a filter closure.
      *
      * @param Closure                                                $callback
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
@@ -1649,7 +1672,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function diffInDaysFiltered(Closure $callback, $date = null, bool $absolute = false): int;
 
     /**
-     * Get the difference in hours rounded down.
+     * Get the difference in hours.
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -1659,7 +1682,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function diffInHours($date = null, bool $absolute = false): float;
 
     /**
-     * Get the difference in hours using a filter closure rounded down.
+     * Get the difference in hours using a filter closure.
      *
      * @param Closure                                                $callback
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
@@ -1680,7 +1703,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function diffInMicroseconds($date = null, bool $absolute = false): float;
 
     /**
-     * Get the difference in milliseconds rounded down.
+     * Get the difference in milliseconds.
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -1690,7 +1713,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function diffInMilliseconds($date = null, bool $absolute = false): float;
 
     /**
-     * Get the difference in minutes rounded down.
+     * Get the difference in minutes.
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -1700,27 +1723,29 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function diffInMinutes($date = null, bool $absolute = false): float;
 
     /**
-     * Get the difference in months rounded down.
+     * Get the difference in months.
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
+     * @param bool                                                   $utc      Always convert dates to UTC before comparing (if not set, it will do it only if timezones are different)
      *
      * @return float
      */
-    public function diffInMonths($date = null, bool $absolute = false): float;
+    public function diffInMonths($date = null, bool $absolute = false, bool $utc = false): float;
 
     /**
-     * Get the difference in quarters rounded down.
+     * Get the difference in quarters.
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
+     * @param bool                                                   $utc      Always convert dates to UTC before comparing (if not set, it will do it only if timezones are different)
      *
      * @return float
      */
-    public function diffInQuarters($date = null, bool $absolute = false): float;
+    public function diffInQuarters($date = null, bool $absolute = false, bool $utc = false): float;
 
     /**
-     * Get the difference in seconds rounded down.
+     * Get the difference in seconds.
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -1730,18 +1755,19 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function diffInSeconds($date = null, bool $absolute = false): float;
 
     /**
-     * @param string                                                 $unit     microsecond, millisecond, second, minute,
+     * @param Unit|string                                            $unit     microsecond, millisecond, second, minute,
      *                                                                         hour, day, week, month, quarter, year,
      *                                                                         century, millennium
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
+     * @param bool                                                   $utc      Always convert dates to UTC before comparing (if not set, it will do it only if timezones are different)
      *
      * @return float
      */
-    public function diffInUnit(string $unit, $date = null, bool $absolute = false): float;
+    public function diffInUnit(Unit|string $unit, $date = null, bool $absolute = false, bool $utc = false): float;
 
     /**
-     * Get the difference in weekdays rounded down.
+     * Get the difference in weekdays.
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -1751,7 +1777,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function diffInWeekdays($date = null, bool $absolute = false): int;
 
     /**
-     * Get the difference in weekend days using a filter rounded down.
+     * Get the difference in weekend days using a filter.
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
@@ -1761,24 +1787,26 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function diffInWeekendDays($date = null, bool $absolute = false): int;
 
     /**
-     * Get the difference in weeks rounded down.
+     * Get the difference in weeks.
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
+     * @param bool                                                   $utc      Always convert dates to UTC before comparing (if not set, it will do it only if timezones are different)
      *
      * @return float
      */
-    public function diffInWeeks($date = null, bool $absolute = false): float;
+    public function diffInWeeks($date = null, bool $absolute = false, bool $utc = false): float;
 
     /**
      * Get the difference in years
      *
      * @param \Carbon\CarbonInterface|\DateTimeInterface|string|null $date
      * @param bool                                                   $absolute Get the absolute of the difference
+     * @param bool                                                   $utc      Always convert dates to UTC before comparing (if not set, it will do it only if timezones are different)
      *
      * @return float
      */
-    public function diffInYears($date = null, bool $absolute = false): float;
+    public function diffInYears($date = null, bool $absolute = false, bool $utc = false): float;
 
     /**
      * @deprecated To avoid conflict between different third-party libraries, static setters should not be used.
@@ -1800,11 +1828,11 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @example
      * ```
      * echo Carbon::parse('2018-07-25 12:45:16.334455')
-     *   ->startOf('month')
-     *   ->endOf('week', Carbon::FRIDAY);
+     *   ->startOf(Unit::Month)
+     *   ->endOf(Unit::Week, Carbon::FRIDAY);
      * ```
      */
-    public function endOf(string $unit, mixed ...$params): static;
+    public function endOf(Unit|string $unit, mixed ...$params): static;
 
     /**
      * Resets the date to end of the century and time to 23:59:59.999999
@@ -1865,6 +1893,18 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function endOfMillennium();
 
     /**
+     * Modify to end of current millisecond, microseconds such as 12345 become 123999
+     *
+     * @example
+     * ```
+     * echo Carbon::parse('2018-07-25 12:45:16.334455')
+     *   ->endOfSecond()
+     *   ->format('H:i:s.u');
+     * ```
+     */
+    public function endOfMillisecond(): static;
+
+    /**
      * Modify to end of current minute, seconds become 59
      *
      * @example
@@ -1920,7 +1960,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * echo Carbon::parse('2018-07-25 12:45:16')->endOfWeek(Carbon::SATURDAY) . "\n";
      * ```
      *
-     * @param WeekDay|int|null $weekEndsAt optional start allow you to specify the day of week to use to end the week
+     * @param WeekDay|int|null $weekEndsAt optional end allow you to specify the day of week to use to end the week
      *
      * @return static
      */
@@ -2130,9 +2170,9 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      *
      * @throws UnknownGetterException
      *
-     * @return string|int|bool|DateTimeZone|null
+     * @return string|int|bool|DateTimeZone
      */
-    public function get(string $name): mixed;
+    public function get(Unit|string $name): mixed;
 
     /**
      * Returns the alternative number for a given date property if available in the current locale.
@@ -2540,7 +2580,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      *
      * @param string $tester day name, month name, hour, date, etc. as string
      */
-    public function is(string $tester): bool;
+    public function is(WeekDay|Month|string $tester): bool;
 
     /**
      * Determines if the instance is greater (after) than another
@@ -2635,6 +2675,11 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function isDayOfWeek($dayOfWeek): bool;
 
     /**
+     * Determines if the instance is end of century (last day by default but interval can be customized).
+     */
+    public function isEndOfCentury(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
      * Check if the instance is end of day.
      *
      * @example
@@ -2648,9 +2693,53 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * Carbon::parse('2019-02-28 23:59:59')->isEndOfDay(true); // false
      * ```
      *
-     * @param bool $checkMicroseconds check time at microseconds precision
+     * @param bool                                                           $checkMicroseconds check time at microseconds precision
+     * @param Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval          if an interval is specified it will be used as precision
+     *                                                                                          for instance with "15 minutes", it checks if current date-time
+     *                                                                                          is in the last 15 minutes of the day, with Unit::Hour, it
+     *                                                                                          checks if it's in the last hour of the day.
      */
-    public function isEndOfDay(bool $checkMicroseconds = false): bool;
+    public function isEndOfDay(Unit|DateInterval|Closure|CarbonConverterInterface|string|bool $checkMicroseconds = false, Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is end of decade (last day by default but interval can be customized).
+     */
+    public function isEndOfDecade(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is end of hour (last microsecond by default but interval can be customized).
+     */
+    public function isEndOfHour(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is end of millennium (last day by default but interval can be customized).
+     */
+    public function isEndOfMillennium(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is end of millisecond (last microsecond by default but interval can be customized).
+     */
+    public function isEndOfMillisecond(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is end of minute (last microsecond by default but interval can be customized).
+     */
+    public function isEndOfMinute(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is end of month (last day by default but interval can be customized).
+     */
+    public function isEndOfMonth(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is end of quarter (last day by default but interval can be customized).
+     */
+    public function isEndOfQuarter(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is end of second (last microsecond by default but interval can be customized).
+     */
+    public function isEndOfSecond(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
 
     /**
      * Returns true if the date was created using CarbonImmutable::endOfTime()
@@ -2658,6 +2747,33 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @return bool
      */
     public function isEndOfTime(): bool;
+
+    /**
+     * Check if the instance is end of a given unit (tolerating a given interval).
+     *
+     * @example
+     * ```
+     * // Check if a date-time is the last 15 minutes of the hour it's in
+     * Carbon::parse('2019-02-28 20:13:00')->isEndOfUnit(Unit::Hour, '15 minutes'); // false
+     * ```
+     */
+    public function isEndOfUnit(Unit $unit, Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null, mixed ...$params): bool;
+
+    /**
+     * Determines if the instance is end of week (last day by default but interval can be customized).
+     *
+     * @example
+     * ```
+     * Carbon::parse('2024-08-31')->endOfWeek()->isEndOfWeek(); // true
+     * Carbon::parse('2024-08-31')->isEndOfWeek(); // false
+     * ```
+     */
+    public function isEndOfWeek(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null, WeekDay|int|null $weekEndsAt = null): bool;
+
+    /**
+     * Determines if the instance is end of year (last day by default but interval can be customized).
+     */
+    public function isEndOfYear(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
 
     /**
      * Determines if the instance is in the future, ie. greater (after) than now.
@@ -2774,6 +2890,30 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public static function isMutable(): bool;
 
     /**
+     * Determines if the instance is now or in the future, ie. greater (after) than or equal to now.
+     *
+     * @example
+     * ```
+     * Carbon::now()->isNowOrFuture(); // true
+     * Carbon::now()->addHours(5)->isNowOrFuture(); // true
+     * Carbon::now()->subHours(5)->isNowOrFuture(); // false
+     * ```
+     */
+    public function isNowOrFuture(): bool;
+
+    /**
+     * Determines if the instance is now or in the past, ie. less (before) than or equal to now.
+     *
+     * @example
+     * ```
+     * Carbon::now()->isNowOrPast(); // true
+     * Carbon::now()->subHours(5)->isNowOrPast(); // true
+     * Carbon::now()->addHours(5)->isNowOrPast(); // false
+     * ```
+     */
+    public function isNowOrPast(): bool;
+
+    /**
      * Determines if the instance is in the past, ie. less (before) than now.
      *
      * @example
@@ -2853,6 +2993,11 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function isSameUnit(string $unit, DateTimeInterface|string $date): bool;
 
     /**
+     * Determines if the instance is start of century (first day by default but interval can be customized).
+     */
+    public function isStartOfCentury(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
      * Check if the instance is start of day / midnight.
      *
      * @example
@@ -2864,9 +3009,53 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * Carbon::parse('2019-02-28 00:00:00.000012')->isStartOfDay(true); // false
      * ```
      *
-     * @param bool $checkMicroseconds check time at microseconds precision
+     * @param bool                                                           $checkMicroseconds check time at microseconds precision
+     * @param Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval          if an interval is specified it will be used as precision
+     *                                                                                          for instance with "15 minutes", it checks if current date-time
+     *                                                                                          is in the last 15 minutes of the day, with Unit::Hour, it
+     *                                                                                          checks if it's in the last hour of the day.
      */
-    public function isStartOfDay(bool $checkMicroseconds = false): bool;
+    public function isStartOfDay(Unit|DateInterval|Closure|CarbonConverterInterface|string|bool $checkMicroseconds = false, Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is start of decade (first day by default but interval can be customized).
+     */
+    public function isStartOfDecade(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is start of hour (first microsecond by default but interval can be customized).
+     */
+    public function isStartOfHour(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is start of millennium (first day by default but interval can be customized).
+     */
+    public function isStartOfMillennium(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is start of millisecond (first microsecond by default but interval can be customized).
+     */
+    public function isStartOfMillisecond(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is start of minute (first microsecond by default but interval can be customized).
+     */
+    public function isStartOfMinute(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is start of month (first day by default but interval can be customized).
+     */
+    public function isStartOfMonth(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is start of quarter (first day by default but interval can be customized).
+     */
+    public function isStartOfQuarter(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
+
+    /**
+     * Determines if the instance is start of second (first microsecond by default but interval can be customized).
+     */
+    public function isStartOfSecond(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
 
     /**
      * Returns true if the date was created using CarbonImmutable::startOfTime()
@@ -2874,6 +3063,33 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @return bool
      */
     public function isStartOfTime(): bool;
+
+    /**
+     * Check if the instance is start of a given unit (tolerating a given interval).
+     *
+     * @example
+     * ```
+     * // Check if a date-time is the first 15 minutes of the hour it's in
+     * Carbon::parse('2019-02-28 20:13:00')->isStartOfUnit(Unit::Hour, '15 minutes'); // true
+     * ```
+     */
+    public function isStartOfUnit(Unit $unit, Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null, mixed ...$params): bool;
+
+    /**
+     * Determines if the instance is start of week (first day by default but interval can be customized).
+     *
+     * @example
+     * ```
+     * Carbon::parse('2024-08-31')->startOfWeek()->isStartOfWeek(); // true
+     * Carbon::parse('2024-08-31')->isStartOfWeek(); // false
+     * ```
+     */
+    public function isStartOfWeek(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null, WeekDay|int|null $weekStartsAt = null): bool;
+
+    /**
+     * Determines if the instance is start of year (first day by default but interval can be customized).
+     */
+    public function isStartOfYear(Unit|DateInterval|Closure|CarbonConverterInterface|string|null $interval = null): bool;
 
     /**
      * Returns true if the strict mode is globally in use, false else.
@@ -3159,6 +3375,8 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * });
      * echo Carbon::yesterday()->hours(11)->userFormat();
      * ```
+     *
+     * @param-closure-this  static  $macro
      */
     public static function macro(string $name, ?callable $macro): void;
 
@@ -3174,7 +3392,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      *
      * @return static|null
      */
-    public static function make($var);
+    public static function make($var, DateTimeZone|string|null $timezone = null);
 
     /**
      * Get the maximum instance between a given instance (default now) and the current instance.
@@ -3480,10 +3698,6 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
 
     /**
      * Call native PHP DateTime/DateTimeImmutable sub() method.
-     *
-     * @param DateInterval $interval
-     *
-     * @return static
      */
     public function rawSub(DateInterval $interval): static;
 
@@ -3576,7 +3790,7 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      *
      * @return $this
      */
-    public function set(array|string $name, DateTimeZone|Month|string|int|float|null $value = null): static;
+    public function set(Unit|array|string $name, DateTimeZone|Month|string|int|float|null $value = null): static;
 
     /**
      * Set the date with gregorian year, month and day numbers.
@@ -3861,11 +4075,11 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @example
      * ```
      * echo Carbon::parse('2018-07-25 12:45:16.334455')
-     *   ->startOf('month')
-     *   ->endOf('week', Carbon::FRIDAY);
+     *   ->startOf(Unit::Month)
+     *   ->endOf(Unit::Week, Carbon::FRIDAY);
      * ```
      */
-    public function startOf(string $unit, mixed ...$params): static;
+    public function startOf(Unit|string $unit, mixed ...$params): static;
 
     /**
      * Resets the date to the first day of the century and the time to 00:00:00
@@ -3924,6 +4138,18 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @return static
      */
     public function startOfMillennium();
+
+    /**
+     * Modify to start of current millisecond, microseconds such as 12345 become 123000
+     *
+     * @example
+     * ```
+     * echo Carbon::parse('2018-07-25 12:45:16.334455')
+     *   ->startOfSecond()
+     *   ->format('H:i:s.u');
+     * ```
+     */
+    public function startOfMillisecond(): static;
 
     /**
      * Modify to start of current minute, seconds become 0
@@ -4006,9 +4232,9 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
      * @example $date->sub(15, 'days')
      * @example $date->sub(CarbonInterval::days(4))
      *
-     * @param string|DateInterval|Closure|CarbonConverterInterface $unit
-     * @param int|float                                            $value
-     * @param bool|null                                            $overflow
+     * @param Unit|string|DateInterval|Closure|CarbonConverterInterface $unit
+     * @param int|float                                                 $value
+     * @param bool|null                                                 $overflow
      *
      * @return static
      */
@@ -4016,6 +4242,8 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function sub($unit, $value = 1, ?bool $overflow = null): static;
 
     /**
+     * @deprecated Prefer to use add subUTCUnit() which more accurately defines what it's doing.
+     *
      * Subtract seconds to the instance using timestamp. Positive $value travels
      * into the past while negative $value travels forward.
      *
@@ -4027,15 +4255,20 @@ interface CarbonInterface extends DateTimeInterface, JsonSerializable
     public function subRealUnit($unit, $value = 1): static;
 
     /**
-     * Subtract given units to the current instance.
+     * Subtract seconds to the instance using timestamp. Positive $value travels
+     * into the past while negative $value travels forward.
      *
-     * @param string    $unit
-     * @param int|float $value
-     * @param bool|null $overflow
+     * @param string $unit
+     * @param int    $value
      *
      * @return static
      */
-    public function subUnit(string $unit, $value = 1, ?bool $overflow = null): static;
+    public function subUTCUnit($unit, $value = 1): static;
+
+    /**
+     * Subtract given units to the current instance.
+     */
+    public function subUnit(Unit|string $unit, $value = 1, ?bool $overflow = null): static;
 
     /**
      * Subtract any unit to a new value without overflowing current other unit given.

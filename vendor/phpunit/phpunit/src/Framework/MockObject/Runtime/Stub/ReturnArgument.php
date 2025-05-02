@@ -12,11 +12,13 @@ namespace PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Invocation;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ReturnArgument implements Stub
+final readonly class ReturnArgument implements Stub
 {
-    private readonly int $argumentIndex;
+    private int $argumentIndex;
 
     public function __construct(int $argumentIndex)
     {

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Extension;
 
+use const PHP_EOL;
 use function assert;
 use function class_exists;
 use function class_implements;
@@ -20,12 +21,14 @@ use ReflectionClass;
 use Throwable;
 
 /**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ExtensionBootstrapper
+final readonly class ExtensionBootstrapper
 {
-    private readonly Configuration $configuration;
-    private readonly Facade $facade;
+    private Configuration $configuration;
+    private Facade $facade;
 
     public function __construct(Configuration $configuration, Facade $facade)
     {
@@ -34,13 +37,13 @@ final class ExtensionBootstrapper
     }
 
     /**
-     * @psalm-param class-string $className
-     * @psalm-param array<string, string> $parameters
+     * @param non-empty-string      $className
+     * @param array<string, string> $parameters
      */
     public function bootstrap(string $className, array $parameters): void
     {
         if (!class_exists($className)) {
-            EventFacade::emitter()->testRunnerTriggeredWarning(
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Cannot bootstrap extension because class %s does not exist',
                     $className,
@@ -51,7 +54,7 @@ final class ExtensionBootstrapper
         }
 
         if (!in_array(Extension::class, class_implements($className), true)) {
-            EventFacade::emitter()->testRunnerTriggeredWarning(
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Cannot bootstrap extension because class %s does not implement interface %s',
                     $className,
@@ -73,7 +76,7 @@ final class ExtensionBootstrapper
                 ParameterCollection::fromArray($parameters),
             );
         } catch (Throwable $t) {
-            EventFacade::emitter()->testRunnerTriggeredWarning(
+            EventFacade::emitter()->testRunnerTriggeredPhpunitWarning(
                 sprintf(
                     'Bootstrapping of extension %s failed: %s%s%s',
                     $className,
